@@ -13,7 +13,8 @@ import Home from './main/Home';
 import AddUser from './main/AddUser';
 import ID from './reset/ID';
 import Phone from './reset/Phone';
-
+import Page1 from './payslip/Page1';
+import Page2 from './payslip/Page2';
 import UserDetails from './UserDetails';
 import { PictureContext } from './provider';
 import DrawerContent from './drawer/DrawerContent';
@@ -36,10 +37,10 @@ export default function App() {
 function MyDrawer() {
   return (
     <Drawer.Navigator drawerContent={props =><DrawerContent {...props}/>} >
-      
+      <Drawer.Screen name="EPaySlip" component={Toptab} />
       <Drawer.Screen name="Home" component={Home} />
       <Drawer.Screen name="AddUser" component={AddUser} />
-      {/* <Drawer.Screen name="Home" component={Home} /> */}
+      
     </Drawer.Navigator>
   );
 }
@@ -57,6 +58,28 @@ function MyStack() {
       </Stack.Navigator>
   );
 }
+
+function Toptab(){
+  return(   
+    
+      <Tab.Navigator
+        screenOptions={{
+          tabBarScrollEnabled:true,
+          tabBarLabelStyle: { fontSize: 12 },
+          tabBarItemStyle: { width: 100 },
+          tabBarStyle: { backgroundColor: 'powderblue' },
+        }}
+      >
+       
+        <Tab.Screen name="Page1" component={Page1} />
+        <Tab.Screen name="Page2" component={Page2} />
+
+
+      </Tab.Navigator>
+  );
+}
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

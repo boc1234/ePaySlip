@@ -31,7 +31,7 @@ export default function DrawerContent({ props,navigation }) {
                         <DrawerItem
                         icon={({color,size})=>(
                  
-                        <AntDesign name="home" size={color} color={color} />
+                        <AntDesign name="home" size={size} color={color} />
                         )}
                          label="Home"
                          onPress={() =>navigation.navigate('Home')}
@@ -39,7 +39,7 @@ export default function DrawerContent({ props,navigation }) {
                         <DrawerItem
                         icon={({color,size})=>(
                  
-                            <AntDesign name="adduser" size={color} color={size} />
+                            <AntDesign name="adduser" size={size} color={color} />
                             )}
                          label="Add User"
                          onPress={() =>navigation.navigate('AddUser')}
