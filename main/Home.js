@@ -7,7 +7,7 @@ import { StyleSheet, Text, View, Button,SafeAreaView ,SafeAreaProvider} from 're
 export default function Home({navigation}) {
     return (
         <View style={styles.container}>
-            <Text>Home!</Text>
+            <Text>Home1!</Text>
             <StatusBar style='auto' />
            
             <Button title='Go to Profile' onPress={() => navigation.navigate('AddUser')} />
