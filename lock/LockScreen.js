@@ -4,6 +4,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import Face from '../verify/Face';
 const {width,height} = Dimensions.get('window');
+import md5 from 'blueimp-md5';
 
 class LockScreen extends Component {
   constructor(props) {
@@ -13,31 +14,44 @@ class LockScreen extends Component {
         passcode:['','','','','','']
     };
   }
+
   
   _onPressNumber = num =>{
       
       let tempCode = this.state.passcode;
+      let pin = '';
       for(var i = 0 ;i< tempCode.length;i++){
           if(tempCode[i] == ''){
               tempCode[i] = num;
+              pin = tempCode.join("");
+              if(pin.length == 6){
+                alert(pin)
+                alert(md5(pin))
+                
+                this.props.navigation.navigate('MyDrawer')
+                
+            }
               break;
           }else{
               continue;
           }
+          
       }
       this.setState({passcode:tempCode})
-      
+     
   }
   _onPressCancel = () =>{
     let tempCode = this.state.passcode;
     for(var i =  tempCode.length -1 ;i>=0; i--){
-        if(tempCode[i] != ''){
-            tempCode[i] = '';
-            break;
-        }else{
-            continue;
-        }
+    //     if(tempCode[i] != ''){
+    //         tempCode[i] = '';
+    //         break;
+    //     }else{
+    //         continue;
+    //     }
+    tempCode[i] = ''
     }
+    
     this.setState({passcode:tempCode})
    
 }
@@ -92,9 +106,9 @@ class LockScreen extends Component {
         <View style={{alignItems:'center',justifyContent:'center'}}>
             <View style={styles.numbersContainer}>
                 {numbers.map(num=>{
-                    // key={num.id}
-                    return (<TouchableOpacity style={styles.number}  onPress = {()=>this._onPressNumber(num.id)}>
-                              <Text style={styles.numberText}>{num.id}</Text>
+                   
+                    return (<TouchableOpacity key={num.id} style={styles.number}    onPress = {()=>this._onPressNumber(num.id)}>
+                              <Text  style={styles.numberText}>{num.id}</Text>
                             </TouchableOpacity>)
                 })}
 

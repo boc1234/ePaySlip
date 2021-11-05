@@ -37,9 +37,10 @@ export default function App() {
 function MyDrawer() {
   return (
     <Drawer.Navigator drawerContent={props =><DrawerContent {...props}/>} >
-      <Drawer.Screen name="EPaySlip" component={Toptab} />
+      
       <Drawer.Screen name="Home" component={Home} />
       <Drawer.Screen name="AddUser" component={AddUser} />
+      <Drawer.Screen name="EPaySlip" component={Toptab} />
       
     </Drawer.Navigator>
   );
@@ -49,12 +50,14 @@ function MyDrawer() {
 function MyStack() {
   return (
       <Stack.Navigator>
-          <Stack.Screen name='LockScreen' component={MyDrawer} options={{headerShown:false}}  />
+          <Stack.Screen name='LockScreen' component={LockScreen} options={{headerShown:false,gestureEnabled: false,}}  />
           <Stack.Screen name='IDCard' component={IDCard} options={{title:"Profile" ,headerRight:()=>(<Button title={"Done"}/>)}} />
           <Stack.Screen name='Face' component={Face} options={{title:"Profile" ,headerRight:()=>(<Button title={"Done"}/>)}} />
           <Stack.Screen name='CheckFace' component={CheckFace}   />
           <Stack.Screen name='ID' component={ID}   />
           <Stack.Screen name='Phone' component={Phone}   />
+          <Stack.Screen name='EPAYSLIP' component={Toptab}   />
+          <Stack.Screen name='MyDrawer' component={MyDrawer} options={{headerShown:false}}  />
       </Stack.Navigator>
   );
 }
@@ -65,14 +68,19 @@ function Toptab(){
       <Tab.Navigator
         screenOptions={{
           tabBarScrollEnabled:true,
-          tabBarLabelStyle: { fontSize: 12 },
+          tabBarLabelStyle: { fontSize: 12,fontWeight:'bold' },
           tabBarItemStyle: { width: 100 },
           tabBarStyle: { backgroundColor: 'powderblue' },
+          
         }}
       >
        
-        <Tab.Screen name="Page1" component={Page1} />
-        <Tab.Screen name="Page2" component={Page2} />
+        <Tab.Screen name="ชื่อ" component={Page1} />
+        <Tab.Screen name="รายรับ" component={Page2} />
+        <Tab.Screen name="ส่วนหัก" component={Page2} />
+        <Tab.Screen name="รวม" component={Page2} />
+        <Tab.Screen name="รายงานการหยุด" component={Page2} />
+
 
 
       </Tab.Navigator>
