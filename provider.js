@@ -1,10 +1,10 @@
 import React from "react"
 
-const userContextTemplate = {
-  userName: "ewe",
-}
+// const userContextTemplate = {
+//   userName: "ewe",
+// }
 const Picture ={
-    pic:0
+    pic:'5451'
 }
 
 

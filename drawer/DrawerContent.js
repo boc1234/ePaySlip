@@ -56,7 +56,7 @@ export default function DrawerContent({ props,navigation }) {
                 <AntDesign name="setting" size={size} color={color} />
                 )}
                 label="Setting"
-                onPress={() => props.navigation.Page1()}
+                onPress={() =>navigation.navigate('Home')}
             />
             <DrawerItem
                 icon={({color,size})=>(
@@ -64,7 +64,7 @@ export default function DrawerContent({ props,navigation }) {
                     
                 )}
                 label="Logout"
-                onPress={() => props.navigation.Page2()}
+                onPress={() =>navigation.navigate('SignIn')}
             />
          </Drawer.Section>
          

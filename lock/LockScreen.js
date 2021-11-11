@@ -5,7 +5,7 @@ import { Feather } from '@expo/vector-icons';
 import Face from '../verify/Face';
 const {width,height} = Dimensions.get('window');
 import md5 from 'blueimp-md5';
-
+import { LinearGradient } from 'expo-linear-gradient';
 class LockScreen extends Component {
   constructor(props) {
       
@@ -25,8 +25,8 @@ class LockScreen extends Component {
               tempCode[i] = num;
               pin = tempCode.join("");
               if(pin.length == 6){
-                alert(pin)
-                alert(md5(pin))
+                // alert(pin)
+                // alert(md5(pin))
                 
                 this.props.navigation.navigate('MyDrawer')
                 
@@ -38,7 +38,7 @@ class LockScreen extends Component {
           
       }
       this.setState({passcode:tempCode})
-     
+    //  alert(this.state.passcode)
   }
   _onPressCancel = () =>{
     let tempCode = this.state.passcode;
@@ -76,16 +76,14 @@ class LockScreen extends Component {
    
         <SafeAreaView style={styles.container}>
         <StatusBar barStyle="light-content"></StatusBar>
-            <ImageBackground source={require('../assets/images/bg2.jpg')}
+        <LinearGradient colors={['#095379','#00adb5']} style={{position:'absolute',top:0,width:width,height:height}}>
+            {/* <ImageBackground source={require('../assets/images/bg2.jpg')}
             style={{position:'absolute',top:0,width:width,height:height}}
-            ></ImageBackground>
+            ></ImageBackground> */}
         <View style={styles.swipe}>
             <View style={{flexDirection:'row'}}>
                 <AntDesign name="lock" size={24} color="#ffffff" style={{marginRight:1}} />
-                <Text style={styles.swipeText} >
-                    {this.state.passcode[0]}
-                </Text>
-                <Text>{this.state.passcode[1]}</Text>
+          
             </View>
           
             
@@ -105,9 +103,9 @@ class LockScreen extends Component {
         
         <View style={{alignItems:'center',justifyContent:'center'}}>
             <View style={styles.numbersContainer}>
-                {numbers.map(num=>{
+                {numbers.map(num=>{ 
                    
-                    return (<TouchableOpacity key={num.id} style={styles.number}    onPress = {()=>this._onPressNumber(num.id)}>
+                    return (<TouchableOpacity key={num.id.toString()} style={styles.number}    onPress = {()=>this._onPressNumber(num.id)}>
                               <Text  style={styles.numberText}>{num.id}</Text>
                             </TouchableOpacity>)
                 })}
@@ -124,6 +122,7 @@ class LockScreen extends Component {
                  <Text style={styles.buttonText} >ยกเลิก</Text>
             </TouchableOpacity> 
         </View>
+        </LinearGradient>
         </SafeAreaView>
         
 

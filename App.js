@@ -9,6 +9,7 @@ import Face from './verify/Face';
 import CheckFace from './verify/CheckFace';
 import IDCard from './verify/IDCard';
 import LockScreen from './lock/LockScreen';
+import SignIn from './login/SignIn';
 import Home from './main/Home';
 import AddUser from './main/AddUser';
 import ID from './reset/ID';
@@ -21,6 +22,7 @@ import DrawerContent from './drawer/DrawerContent';
 const Tab = createMaterialTopTabNavigator();
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
+const a = 1;
 export default function App() {
   // const {Text} = useContext(PictureContext)
   return (
@@ -48,17 +50,32 @@ function MyDrawer() {
 
 
 function MyStack() {
+
   return (
-      <Stack.Navigator>
-          <Stack.Screen name='LockScreen' component={LockScreen} options={{headerShown:false,gestureEnabled: false,}}  />
-          <Stack.Screen name='IDCard' component={IDCard} options={{title:"Profile" ,headerRight:()=>(<Button title={"Done"}/>)}} />
+    
+      <Stack.Navigator  >
+        
+          <Stack.Screen name='SignIn' component={SignIn} options={{headerShown:false,}}  />
           <Stack.Screen name='Face' component={Face} options={{title:"Profile" ,headerRight:()=>(<Button title={"Done"}/>)}} />
+          <Stack.Screen name='LockScreen' component={LockScreen} options={{headerShown:false}}  />
+          
+          <Stack.Screen name='IDCard' component={IDCard} options={{title:"Profile" ,headerRight:()=>(<Button title={"Done"}/>)}} />
+          
           <Stack.Screen name='CheckFace' component={CheckFace}   />
           <Stack.Screen name='ID' component={ID}   />
           <Stack.Screen name='Phone' component={Phone}   />
           <Stack.Screen name='EPAYSLIP' component={Toptab}   />
           <Stack.Screen name='MyDrawer' component={MyDrawer} options={{headerShown:false}}  />
+          {/* <Stack.Screen name='LockScreen' component={LockScreen} options={{headerShown:false}}  /> */}
       </Stack.Navigator>
+  );
+}
+function MyLogin() {
+  return(
+    <Stack.Navigator >
+      <Stack.Screen name='SignIn' component={SignIn} options={{headerShown:false,gestureEnabled: false,}}  />
+      {/* <Stack.Screen name='MyStack' component={MyStack} options={{headerShown:false,gestureEnabled: false,}}  /> */}
+    </Stack.Navigator>
   );
 }
 

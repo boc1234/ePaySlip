@@ -7,24 +7,29 @@ import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 const {width,height} = Dimensions.get('window');
 import { PictureContext } from '../provider';
+import { Button } from 'react-native-paper';
 
 
 export default function Face({ navigation }) {
-  const context = createContext('value')
-// const value = useContext(context)
+  // const context = createContext(PictureContext)
+const value = useContext(PictureContext)
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.front);
   const ref = useRef(null);
-  const [name,setName] = useState();
-  // const {value,setValue} = useContext(PictureContext)
+  // const [name,setName] = useState(context);
+  // const {value,setValue} = useContext(PictureContext);
 
 useEffect(() => {
     (async () => {
   
       const { status } = await Camera.requestCameraPermissionsAsync();
       setHasPermission(status === 'granted');
+      
+      // console.log(value._currentValue.pic)
 
-      console.log('test')
+      
+
+
     })();
   }, );
 
@@ -43,7 +48,7 @@ useEffect(() => {
       const option ={quatity:0.5,base64:true,skipProcessing:true};
       const picture = await ref.current.takePictureAsync(option); 
       const array_picture = [picture]
-    
+    console.log(picture)
     // try{
     //   if(picture.source){
     //   console.log(picture.source)
@@ -93,7 +98,7 @@ useEffect(() => {
    {/* </View> */}
    <View style={{height:'10%',backgroundColor:'#11052C',}}>
          <Text style={styles.header}>ถ่ายใบหน้า</Text>
-
+    
      </View>
        <Camera style={styles.camera} type={type} ref={ref} >
       

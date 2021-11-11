@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React,{useEffect} from 'react';
-import { StyleSheet, Text, View, Button,SafeAreaView ,SafeAreaProvider,BackHandler,Alert} from 'react-native';
+import { StyleSheet, Text, View, Button,SafeAreaView ,SafeAreaProvider,BackHandler,Alert,TouchableOpacity} from 'react-native';
 import { Card } from 'react-native-paper';
 // const {  DatePicker, Space  } = antd;
 
@@ -34,11 +34,15 @@ export default function Home({navigation}) {
            
             <Button title='Go to Profile' onPress={() => navigation.navigate('AddUser')} /> */}
             {/* <DatePicker onChange={onChange} picker="year" /> */}
+            
             <View style={{marginTop:15}}>
                 <Card style={styles.card}>
-                <Text style={styles.paragraph} onPress={() => navigation.navigate('EPAYSLIP')}>13 November 2020</Text>
+                <TouchableOpacity onPress={() => navigation.navigate('EPAYSLIP')}>
+                <Text style={styles.paragraph} >13 November 2020</Text>
+                </TouchableOpacity>
                 </Card>
             </View>
+            
             <View style={{marginTop:15}}>
                 <Card style={styles.card}>
                 <Text style={styles.paragraph} onPress={() => navigation.navigate('EPAYSLIP')}>13 November 2020</Text>
