@@ -3,18 +3,50 @@ import { View, Text ,StyleSheet,SafeAreaView,Image,StatusBar,ImageBackground, Di
 import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import Face from '../verify/Face';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const {width,height} = Dimensions.get('window');
+
 import md5 from 'blueimp-md5';
 import { LinearGradient } from 'expo-linear-gradient';
 class LockScreen extends Component {
   constructor(props) {
-      
+ 
     super(props);
     this.state = {
-        passcode:['','','','','','']
+        passcode:['','','','','',''],
+        pin:'e10adc3949ba59abbe56e057f20f883e'
     };
+    
+  }
+ async componentDidMount () {
+    
+    try {
+        const checkpin = await AsyncStorage.getItem('@pin')
+        if(checkpin !== null) {
+
+          this.state.pin = checkpin;
+          // value previously stored
+       
+        }
+      } catch(e) {
+          console.log(e)
+        // error reading value
+      }
   }
 
+//   getData = async () => {
+//     try {
+//       const value = await AsyncStorage.getItem('@empid')
+//       if(value !== null) {
+//           console.log(123)
+//         this.state.pin = value;
+//         // value previously stored
+       
+//       }
+//     } catch(e) {
+//       // error reading value
+//     }
+//     }
   
   _onPressNumber = num =>{
       
@@ -25,10 +57,15 @@ class LockScreen extends Component {
               tempCode[i] = num;
               pin = tempCode.join("");
               if(pin.length == 6){
-                // alert(pin)
-                // alert(md5(pin))
-                
-                this.props.navigation.navigate('MyDrawer')
+ 
+                if(this.state.pin == md5(pin)){
+                    this.props.navigation.navigate('MyDrawer')
+                }else{
+                    alert('Incorrect PIN. Try again.')
+                    this._onPressCancel();
+                    this.props.navigation.navigate('MyDrawer')
+                }
+            
                 
             }
               break;
@@ -58,6 +95,7 @@ class LockScreen extends Component {
  
   render() {
     const { navigation } = this.props;
+
       let numbers =[
           {id:'1'},
           {id:'2'},
@@ -89,7 +127,8 @@ class LockScreen extends Component {
             
             <View style={{marginTop:50}}>
                 <View >
-                    <Text style={styles.passcodeText}>ใส่รหัสผ่าน</Text>
+                    <Text style={styles.passcodeText}>Enter Password</Text>
+
                 </View>
                 <View style={styles.codeContainer}>
                     {this.state.passcode.map(p=>{
@@ -115,11 +154,12 @@ class LockScreen extends Component {
         </View>
 
         <View style={styles.buttons}>
-            <TouchableOpacity  onPress = {()=>this._onPressCancel()}>
-                <Text style={styles.buttonText} onPress={() => navigation.navigate('Phone')} >ลืมรหัสผ่าน</Text>
+            <TouchableOpacity  >
+                <Text style={styles.buttonText} onPress={() => navigation.navigate('Phone')} >Forgot </Text>
+                <Text style={styles.buttonText} onPress={() => navigation.navigate('Phone')} >Password</Text>
             </TouchableOpacity>
             <TouchableOpacity  onPress = {()=>this._onPressCancel()}>
-                 <Text style={styles.buttonText} >ยกเลิก</Text>
+                 <Text style={styles.buttonText} >Cancel</Text>
             </TouchableOpacity> 
         </View>
         </LinearGradient>
@@ -158,7 +198,7 @@ const styles = StyleSheet.create({
     passcodeText:{
         fontSize:24,
         color:'#ffffff',
-        letterSpacing:0.34,
+        letterSpacing:0.1,
         lineHeight: 50
     },
    
@@ -216,7 +256,7 @@ const styles = StyleSheet.create({
         justifyContent:'space-between'
     },
     buttonText:{
-        fontSize:16,
+        fontSize:14,
         color:'#ffffff',
         letterSpacing:-0.39,
         textAlign:'center'

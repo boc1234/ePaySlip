@@ -1,11 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
-import React,{useEffect} from 'react';
+import React,{useEffect,useState} from 'react';
 import { StyleSheet, Text, View, Button,SafeAreaView ,SafeAreaProvider,BackHandler,Alert,TouchableOpacity} from 'react-native';
 import { Card } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // const {  DatePicker, Space  } = antd;
 
 export default function Home({navigation}) {
+  const [test,setTest] = useState('');
     useEffect(() => {
+      getData();
         const backAction = () => {
           Alert.alert("Hold on!", "Are you sure you want to go back?", [
             {
@@ -27,6 +30,18 @@ export default function Home({navigation}) {
         return () => backHandler.remove();
       }, []);
 
+      const getData = async () => {
+        try {
+          const value = await AsyncStorage.getItem('@empid')
+          if(value !== null) {
+            setTest(value)
+            // value previously stored
+           
+          }
+        } catch(e) {
+          // error reading value
+        }
+      }
     return (
         <View style={styles.container}>
             {/* <Text>Home1!</Text>
@@ -37,8 +52,9 @@ export default function Home({navigation}) {
             
             <View style={{marginTop:15}}>
                 <Card style={styles.card}>
-                <TouchableOpacity onPress={() => navigation.navigate('EPAYSLIP')}>
-                <Text style={styles.paragraph} >13 November 2020</Text>
+                <TouchableOpacity onPress={() => navigation.navigate('EPAYSLIP')} style={{flexDirection:'row',}}>
+                <Text style={styles.paragraph} >{test}{'\n'} Nov</Text>
+                {/* <Text style={{flexGrow:2}} >13 November 2020</Text> */}
                 </TouchableOpacity>
                 </Card>
             </View>
@@ -76,15 +92,19 @@ const styles = StyleSheet.create({
         
     },
     paragraph: {
-      margin: 35,
+    
+      // margin: 35,
       fontSize: 20,
       fontWeight: 'bold',
-      textAlign: 'center',
+      // textAlign: 'center',
       color: '#34495e',
-      
+      alignItems:'center',
+      justifyContent: 'flex-start',
     },
     card:{
-        height:100
+        height:100,
+        
         // backgroundColor:'red'
+        width:300
     }
 });

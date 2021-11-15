@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, Button ,SafeAreaView ,TouchableOpacity , TextIn
 import { FontAwesome } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
-
+import { LinearGradient } from 'expo-linear-gradient';
 const {width,height} = Dimensions.get('window');
 
 export default function Phone({ navigation }) {
@@ -13,10 +13,11 @@ export default function Phone({ navigation }) {
         
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} >
         
-        <ScrollView >
-        
-        <SafeAreaView style={styles.container}>
-        <StatusBar barStyle="light-content"></StatusBar>
+        {/* <ScrollView > */}
+        <View style={styles.container}>
+        <LinearGradient colors={['#095379','#00adb5']} style={{position:'absolute',top:0,width:width,height:'50%'}}/>
+        {/* <LinearGradient colors={['#095379','#00adb5']}  style={styles.container} > */}
+        <StatusBar  barStyle="light-content"></StatusBar>
             <View style={styles.iconContainer}>
                 <TouchableOpacity  disabled={true} style={styles.frame}>
                      <FontAwesome name="mobile-phone"  style={styles.icon} />
@@ -24,28 +25,32 @@ export default function Phone({ navigation }) {
 
                  
             </View>
-            <View  >
+            <View style={{marginBottom:20}} >
                     <Text style={styles.text}>กรอกหมายเลขโทรศัพท์มือถือ</Text>
+                        <TextInput
+                         style={styles.input}
+                    
+                         // onChangeText={onChangeNumber}
+                        // value={number}
+                        placeholder="useless placeholder"
+                        keyboardType="numeric"
+                        />
+                        
             </View>
             
-            <TextInput
-                style={styles.input}
-                
-                // onChangeText={onChangeNumber}
-                // value={number}
-                placeholder="useless placeholder"
-                keyboardType="numeric"
-            />
-            {/* <StatusBar style='auto' /> */}
             <TouchableOpacity style={styles.button}>
                 <Text style={styles.buttonText}  onPress={() => navigation.navigate('ID')} >Next
                 
                 </Text>
                 
             </TouchableOpacity>
+            <View style={{marginTop:50}}></View>
+            {/* <StatusBar style='auto' /> */}
+          
             
-        </SafeAreaView>
-        </ScrollView>
+        {/* </LinearGradient> */}
+        </View>
+        {/* </ScrollView> */}
     </TouchableWithoutFeedback>
         
     );
@@ -57,14 +62,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
         // alignItems: 'center',
         width:width,height:height,
-        
+        justifyContent:'space-around'
         // justifyContent: 'center',
     },
     frame:{
-        width:200,
-        height:200,
+        width:150,
+        height:150,
         borderRadius:200,
-        backgroundColor:'#393E46',
+        backgroundColor:'#095379',
         justifyContent:'center',
         alignItems:'center',
         margin:50
@@ -72,10 +77,11 @@ const styles = StyleSheet.create({
     iconContainer:{
         flexDirection:'row',
         flexWrap:'wrap',
-        marginTop:10,
+        // marginTop:5,
         alignItems:'center',
         justifyContent:'center',
-
+        borderRadius: 20,
+        // backgroundColor:'blue'
      
     },
     icon:{
@@ -84,12 +90,14 @@ const styles = StyleSheet.create({
         // letterSpacing:0,
         textAlign:'center',
         justifyContent:'center',
+    
     },
     input: {
         
    
         padding: 10,
-        margin: 25,
+        marginRight: 25,
+        marginLeft: 25,
         borderWidth: 1,
         padding: 10,
       },
@@ -101,11 +109,15 @@ const styles = StyleSheet.create({
       },
       button:{
      
+        paddingLeft: 15,
+        paddingRight: 15,
+        borderRadius: 5,
         //   width:"80%",
-        backgroundColor:'#00ADB5',
+        backgroundColor:'#095379',
       
           padding: 10,
-          margin: 30,
+          marginRight: 30,
+          marginLeft: 30,
         //   height: 80,
           justifyContent:'center',
       },
@@ -119,5 +131,11 @@ const styles = StyleSheet.create({
         // marginRight:20,
         // marginTop:20
         
-    }
+    },
+    linearGradient: {
+        flex: 1,
+        paddingLeft: 15,
+        paddingRight: 15,
+        borderRadius: 5
+      },
 });

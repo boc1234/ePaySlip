@@ -4,11 +4,20 @@ import { StyleSheet, Text, View, Button ,SafeAreaView} from 'react-native';
 import { DrawerContentScrollView,DrawerItem ,DrawerItemList} from '@react-navigation/drawer';
 import { Drawer,Avatar,Title,Caption,Patagraph,TouchableRipper } from 'react-native-paper';
 import { size } from 'lodash';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
 export default function DrawerContent({ props,navigation }) {
+
+
+     const removeItemValue= async() =>{
+        AsyncStorage.getAllKeys()
+        .then(keys => AsyncStorage.multiRemove(keys))
+        .then(() => alert('success'));
+        navigation.navigate('SignIn')
+    }
 
     return (
         <View style={{flex:1}}>
@@ -64,7 +73,7 @@ export default function DrawerContent({ props,navigation }) {
                     
                 )}
                 label="Logout"
-                onPress={() =>navigation.navigate('SignIn')}
+                onPress={removeItemValue}
             />
          </Drawer.Section>
          

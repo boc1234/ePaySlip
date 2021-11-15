@@ -11,7 +11,7 @@ export default function ID({ navigation }) {
         
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} >
         
-        <ScrollView >
+        {/* <ScrollView > */}
         
         <SafeAreaView style={styles.container}>
         <StatusBar barStyle="light-content"></StatusBar>
@@ -43,7 +43,7 @@ export default function ID({ navigation }) {
             </TouchableOpacity>
             
         </SafeAreaView>
-        </ScrollView>
+        {/* </ScrollView> */}
     </TouchableWithoutFeedback>
         
     );
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
         // alignItems: 'center',
         width:width,height:height,
-        
+       justifyContent:'space-around'
         // justifyContent: 'center',
     },
     frame:{
