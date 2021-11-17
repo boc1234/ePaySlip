@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React,{useState} from 'react';
 import { StyleSheet, Text, View, Button ,SafeAreaView ,TouchableOpacity , TextInput ,TouchableWithoutFeedback ,Keyboard,ScrollView ,Dimensions} from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
@@ -7,6 +7,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 const {width,height} = Dimensions.get('window');
 
 export default function ID({ navigation }) {
+    const [empid, setEmpid] = useState("123");
+
     return (
         
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} >
@@ -15,20 +17,20 @@ export default function ID({ navigation }) {
         
         <SafeAreaView style={styles.container}>
         <StatusBar barStyle="light-content"></StatusBar>
-            <View style={styles.iconContainer}>
+            {/* <View style={styles.iconContainer}>
                 <TouchableOpacity  disabled={true} style={styles.frame}>
                      <Entypo name="v-card"  style={styles.icon}/>
                  </TouchableOpacity>
 
                  
-            </View>
+            </View> */}
             <View  >
                     <Text style={styles.text}>กรอกหมายเลขบัตรประชาชน</Text>
             </View>
             
             <TextInput
                 style={styles.input}
-                
+                onChangeText={id=> setEmpid(id)}
                 // onChangeText={onChangeNumber}
                 // value={number}
                 placeholder="useless placeholder"
@@ -36,8 +38,13 @@ export default function ID({ navigation }) {
             />
             {/* <StatusBar style='auto' /> */}
             <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}  onPress={() => navigation.navigate('Page2')} >Next
-                
+                <Text style={styles.buttonText}   onPress={() => navigation.navigate({
+                     name: 'SignUp',
+                     
+                     params: { p_empid: empid },
+                     merge: true,
+                     })} >
+                     Next
                 </Text>
                 
             </TouchableOpacity>

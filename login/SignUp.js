@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React,{useContext,createContext} from 'react';
+import React,{useContext,createContext,useState,useEffect} from 'react';
 import { StyleSheet, Text, View, Button ,SafeAreaView ,TouchableOpacity , TextInput ,TouchableWithoutFeedback ,Keyboard,ScrollView ,Dimensions} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
@@ -10,7 +10,32 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 const {width,height} = Dimensions.get('window');
 
-export default function SignUp({ navigation }) {
+export default function SignUp({ navigation,route }) {
+    const [empid, setEmpid] = useState("Employee ID");
+    const [phone, setPhone] = useState("PhoneNumber");
+    const [idcard, setIdcard] = useState("");
+    const [passport, setPassport] = useState("");
+    const [pin, setPin] = useState("PIN");
+    if(route.params?.pin != undefined){
+        
+
+     useEffect(async()=>{
+        console.log(route.params?.pin)
+        try {
+            setEmpid(route.params?.p_empid)
+            setPin(route.params?.pin)
+            
+        } catch(e) {
+          // error reading value
+        }
+      },)
+        
+            // value previously stored
+           
+          
+  
+    }
+    
     const login =()=>{
         navigation.navigate('LockScreen')
         
@@ -31,15 +56,15 @@ export default function SignUp({ navigation }) {
             <View style={styles.content} >
             <View  style={{flexDirection:'row',alignItems:'center'}}>
                     {/* <AntDesign name="idcard" style={styles.icon} size={24}  /> */}
-                    <TouchableOpacity onPress={()=>navigation.navigate('ID')}>
-                        <TextInput style={styles.textInput} placeholder={'Employee ID'} editable={false} selectTextOnFocus={false}  ></TextInput>
+                    <TouchableOpacity  onPress={()=>navigation.navigate('ID')}>
+                        <TextInput style={styles.textInput} placeholder={empid} editable={false} selectTextOnFocus={false}   ></TextInput>
                     </TouchableOpacity>
                     
-                    <Ionicons name="md-checkmark-circle" size={22} color="green" />
+                    <Ionicons  name="md-checkmark-circle" size={22} color="green" />
                 </View>
                 <View>
                     {/* <AntDesign name="idcard" style={styles.icon} size={24}  /> */}
-                    <TextInput style={styles.textInput} placeholder={'ID Card'}  ></TextInput>
+                    <TextInput style={styles.textInput} placeholder={phone}  ></TextInput>
                 </View>
                 <View>
                     {/* <AntDesign name="idcard" style={styles.icon} size={24}  /> */}
@@ -47,11 +72,19 @@ export default function SignUp({ navigation }) {
                 </View>
                 <View>
                     {/* <AntDesign name="idcard" style={styles.icon} size={24}  /> */}
-                    <TextInput style={styles.textInput} placeholder={'ID Card or Passport'}  ></TextInput>
+                    <TouchableOpacity  onPress={()=>navigation.navigate('CreatePass')}>
+                    <TextInput style={styles.textInput} placeholder={pin}  ></TextInput>
+                    </TouchableOpacity>
+                </View>
+                <View>
+                    {/* <AntDesign name="idcard" style={styles.icon} size={24}  /> */}
+                    <TextInput style={styles.textInput} placeholder={'ID Card or Passport Scan'}  ></TextInput>
                 </View>
                 <View>
                     {/* <Feather name="phone" style={styles.icon} size={24}  /> */}
-                    <TextInput keyboardType={'phone-pad'} style={styles.textInput}  placeholder={'Phone Number'} ></TextInput>
+                    <TouchableOpacity  onPress={()=>navigation.navigate('Face')}>
+                    <TextInput keyboardType={'phone-pad'} style={styles.textInput}  placeholder={'Face Scan'} editable={false} selectTextOnFocus={false}   ></TextInput>
+                    </TouchableOpacity>
                 </View>
             <TouchableOpacity style={styles.button}  onPress={login}>
             

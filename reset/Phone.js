@@ -15,16 +15,16 @@ export default function Phone({ navigation }) {
         
         {/* <ScrollView > */}
         <View style={styles.container}>
-        <LinearGradient colors={['#095379','#00adb5']} style={{position:'absolute',top:0,width:width,height:'50%'}}/>
+        
         {/* <LinearGradient colors={['#095379','#00adb5']}  style={styles.container} > */}
         <StatusBar  barStyle="light-content"></StatusBar>
-            <View style={styles.iconContainer}>
+            {/* <View style={styles.iconContainer}>
                 <TouchableOpacity  disabled={true} style={styles.frame}>
                      <FontAwesome name="mobile-phone"  style={styles.icon} />
                  </TouchableOpacity>
 
                  
-            </View>
+            </View> */}
             <View style={{marginBottom:20}} >
                     <Text style={styles.text}>กรอกหมายเลขโทรศัพท์มือถือ</Text>
                         <TextInput

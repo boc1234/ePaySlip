@@ -8,10 +8,11 @@ import { FontAwesome } from '@expo/vector-icons';
 const {width,height} = Dimensions.get('window');
 import { PictureContext } from '../provider';
 import { Button } from 'react-native-paper';
-
+import { useIsFocused } from '@react-navigation/native';
 
 export default function Face({ navigation }) {
   // const context = createContext(PictureContext)
+  const {isFocused} = useIsFocused();
 const value = useContext(PictureContext)
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.front);
@@ -19,10 +20,11 @@ const value = useContext(PictureContext)
   // const [name,setName] = useState(context);
   // const {value,setValue} = useContext(PictureContext);
 
+
 useEffect(() => {
     (async () => {
   
-      const { status } = await Camera.requestCameraPermissionsAsync();
+      const { status } = await   Camera.requestCameraPermissionsAsync();
       setHasPermission(status === 'granted');
       
       // console.log(value._currentValue.pic)
@@ -36,13 +38,15 @@ useEffect(() => {
 
 
 
-  if (hasPermission === null) {
+  if (hasPermission === null ) {
     return <View />;
   }
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }
-
+const reload = async()=>{
+  window.location.reload()
+}
   const takePicture = async()=>{
 
       const option ={quatity:0.5,base64:true,skipProcessing:true};
@@ -92,7 +96,7 @@ useEffect(() => {
   
     <SafeAreaView style={styles.container}>
    <StatusBar barStyle="light-content"></StatusBar>
-  
+
    
 
    {/* </View> */}
@@ -100,8 +104,8 @@ useEffect(() => {
          <Text style={styles.header}>ถ่ายใบหน้า</Text>
     
      </View>
-       <Camera style={styles.camera} type={type} ref={ref} >
-      
+       < Camera style={styles.camera} type={type} ref={ref}  >
+       
      
       </Camera>
   
@@ -148,7 +152,7 @@ useEffect(() => {
 
             
         </View>
-       
+
     
     </SafeAreaView>
     

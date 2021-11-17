@@ -10,6 +10,8 @@ import Face from './verify/Face';
 import CheckFace from './verify/CheckFace';
 import IDCard from './verify/IDCard';
 import LockScreen from './lock/LockScreen';
+import CreatePass from './lock/CreatePass';
+import ConfirmPass from './lock/ConfirmPass';
 import SignIn from './login/SignIn';
 import SignUp from './login/SignUp';
 import Home from './main/Home';
@@ -66,12 +68,13 @@ function MyStack() {
           <Stack.Screen name='SignIn' component={SignIn} options={{headerShown:false,}}  />
           <Stack.Screen name='LockScreen' component={LockScreen} options={{headerShown:false}}  />
           <Stack.Screen name='SignUp' component={SignUp} options={{headerTintColor: 'white',headerStyle:{backgroundColor:'#095379'}}} />
-          <Stack.Screen name='Face' component={Face} options={{title:"Profile" ,headerRight:()=>(<Button title={"Done"}/>)}} />
+          <Stack.Screen name='Face' component={Face} options={{headerShown:false}} />
           <Stack.Screen name='IDCard' component={IDCard} options={{title:"Profile" ,headerRight:()=>(<Button title={"Done"}/>)}} />
-          
+          <Stack.Screen name='CreatePass' component={CreatePass} options={{headerShown:false}}  />
+          <Stack.Screen name='ConfirmPass' component={ConfirmPass} options={{headerShown:false}}  />
           <Stack.Screen name='CheckFace' component={CheckFace}   />
-          <Stack.Screen name='ID' component={ID}   />
-          <Stack.Screen name='Phone' component={Phone}   options={{headerTintColor: 'white',headerStyle:{backgroundColor:'#095379'}}} />
+          <Stack.Screen name='ID' component={ID} options={{ title: 'Employee ID' }}  />
+          <Stack.Screen name='Phone' component={Phone}   options={{title: 'Forgot Password',headerTintColor: 'white',headerStyle:{backgroundColor:'#095379'}}} />
           <Stack.Screen name='EPAYSLIP' component={Toptab}   />
           <Stack.Screen name='MyDrawer' component={MyDrawer} options={{headerShown:false}}  />
           {/* <Stack.Screen name='LockScreen' component={LockScreen} options={{headerShown:false}}  /> */}
