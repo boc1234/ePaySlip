@@ -10,6 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 const {width,height} = Dimensions.get('window');
 import axios from 'axios';
+import {URL} from '../provider'
 export default function SignIn({ navigation }) {
 
 const [empid, setEmpid] = useState("Y16992");
@@ -63,12 +64,23 @@ const [test,setTest] = useState('');
     //     //   // For example, send the post to the server
     //     // }
     //   }, []);
-
+    const add = ()=>{
+        navigation.navigate({
+          name: 'SignUp',
+          params: { stat: 1 },
+          merge: true,
+        });
+      }
+      
 
       const checkLogin = async()=>{
-        
-       
-        axios.get("https://localhost:44336/CheckLogin",{
+        // navigation.navigate({
+        //     name: 'LockScreen',
+
+        //   });
+        console.log(empid)
+       console.log(phone)
+        axios.get(URL+"CheckLogin",{
             params:{
                 id:empid,
                 phone:phone
@@ -81,6 +93,7 @@ const [test,setTest] = useState('');
             if(response.data.empid != '' && response.data.empid != undefined){
                 console.log(response.data)
                 try {
+                     AsyncStorage.setItem('@phone',response.data.phonenum)
                      AsyncStorage.setItem('@empid',response.data.empid)
                      AsyncStorage.setItem('@pin',response.data.pin)
                      navigation.navigate({
@@ -91,6 +104,18 @@ const [test,setTest] = useState('');
                     // saving error
                     console.log(e)
                   }
+
+                   
+        axios.get(URL+"GetName",{
+            params:{
+                id:response.data.empid,
+              
+            }
+        
+        }).then(function(response){
+            console.log(response.data.namempt)
+            AsyncStorage.setItem('@name',response.data.namempt)
+        })
 
             }
             // setTest(response.data[0].dteyrepay)
@@ -129,10 +154,11 @@ const [test,setTest] = useState('');
         {/* <ScrollView > */}
         {/* <StatusBar barStyle="light-content"></StatusBar> */}
      
-        <View style={{padding: 24, flex: 1,justifyContent:'space-around'}}>
+        <View style={{padding: 24, flex: 1,}}>
+        {/* justifyContent:'space-around' */}
             <View style={{marginBottom:'10%'}}></View>
             <View style={styles.header}>
-  <Text>{test}</Text>
+  
                 <Text style={styles.headerText}>Welcome!</Text>
                 <Text style={{paddingBottom:15,color:'white',zIndex:1}}>Login to continue</Text>
             </View>
@@ -152,7 +178,7 @@ const [test,setTest] = useState('');
             </TouchableOpacity>
             <View style={styles.extraView}>
                 <Text style={styles.extraText}>Don't have an account?  </Text>
-                <TouchableOpacity  onPress={()=> navigation.navigate('SignUp')} >
+                <TouchableOpacity  onPress={add} >
             
                 <Text style={styles.linkText}>Sign up</Text>
 
@@ -198,7 +224,7 @@ const styles = StyleSheet.create({
     },
     content:{
         
-        paddingTop:15,
+        paddingTop:55,
     },
     textInput:{
         backgroundColor:'rgba(255,255,255,0.4)',

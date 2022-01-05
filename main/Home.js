@@ -5,7 +5,7 @@ import { Card } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // const {  DatePicker, Space  } = antd;
 
-export default function Home({navigation}) {
+export default function Home({navigation,route}) {
   const [test,setTest] = useState('');
     useEffect(() => {
       getData();
@@ -35,6 +35,7 @@ export default function Home({navigation}) {
           const value = await AsyncStorage.getItem('@empid')
           if(value !== null) {
             setTest(value)
+
             // value previously stored
            
           }
@@ -51,15 +52,17 @@ export default function Home({navigation}) {
             {/* <DatePicker onChange={onChange} picker="year" /> */}
             
             <View style={{marginTop:15}}>
+            <TouchableOpacity onPress={() => navigation.navigate('PaySlip')}>
                 <Card style={styles.card}>
-                <TouchableOpacity onPress={() => navigation.navigate('EPAYSLIP')} style={{flexDirection:'row',}}>
-                <Text style={styles.paragraph} >{test}{'\n'} Nov</Text>
+               
+                <Text style={styles.paragraph} >EPAYSLIP</Text>
                 {/* <Text style={{flexGrow:2}} >13 November 2020</Text> */}
-                </TouchableOpacity>
+                
                 </Card>
+                </TouchableOpacity>
             </View>
             
-            <View style={{marginTop:15}}>
+            {/* <View style={{marginTop:15}}>
                 <Card style={styles.card}>
                 <Text style={styles.paragraph} onPress={() => navigation.navigate('EPAYSLIP')}>13 November 2020</Text>
                 </Card>
@@ -73,7 +76,7 @@ export default function Home({navigation}) {
                 <Card style={styles.card}>
                 <Text style={styles.paragraph} onPress={() => navigation.navigate('EPAYSLIP')}>13 November 2020</Text>
                 </Card>
-            </View>
+            </View> */}
         </View>
 
         
@@ -94,9 +97,10 @@ const styles = StyleSheet.create({
     paragraph: {
     
       // margin: 35,
+      alignContent:'center',
       fontSize: 20,
       fontWeight: 'bold',
-      // textAlign: 'center',
+      textAlign: 'center',
       color: '#34495e',
       alignItems:'center',
       justifyContent: 'flex-start',

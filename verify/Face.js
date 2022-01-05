@@ -63,7 +63,7 @@ const reload = async()=>{
     // }
     navigation.navigate({
       name: 'CheckFace',
-      params: { pic: array_picture },
+      params: { pic: picture },
       merge: true,
     });
   
@@ -100,8 +100,8 @@ const reload = async()=>{
    
 
    {/* </View> */}
-   <View style={{height:'10%',backgroundColor:'#11052C',}}>
-         <Text style={styles.header}>ถ่ายใบหน้า</Text>
+   <View style={{height:'12%',backgroundColor:'black',}}>
+         {/* <Text style={styles.header}>ถ่ายใบหน้า</Text> */}
     
      </View>
        < Camera style={styles.camera} type={type} ref={ref}  >

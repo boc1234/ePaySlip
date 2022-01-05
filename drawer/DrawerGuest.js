@@ -9,26 +9,22 @@ import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Avatar } from "react-native-elements";
-export default function DrawerContent({ props,navigation }) {
+import {URL} from '../provider'
+export default function DrawerGuest({ props,navigation,route}) {
 const [name,setName] = useState('')
-const [firstcha,setFirstcha] = useState('')
 
 useEffect(async()=>{
     try {
-      const s_name = await AsyncStorage.getItem('@name');
-
-      setName(s_name)
-    //   setFirstcha(s_name.charAt(0))
-
+      const g_name = await AsyncStorage.getItem('@guestname');
+      setName(g_name)
     } catch(e) {
       // error reading value
     }
   },[])
      const removeItemValue= async() =>{
-        AsyncStorage.getAllKeys()
-        .then(keys => AsyncStorage.multiRemove(keys))
+        await AsyncStorage.removeItem('@guest')
         .then(() => alert('success'));
-        navigation.navigate('SignIn')
+        navigation.navigate('MyDrawer')
     }
 
     return (
@@ -36,13 +32,8 @@ useEffect(async()=>{
             <DrawerContentScrollView {...props}>
                 <View style={styles.DrawerContent}>
                     <View style={styles.userInfoSection}>
-                        
                         <View style={{flexDirection:'row',marginTop:15}}>
-                            {/* <Avatar.Image source={{
-                               uri:'../asset/images/Avatar.jpg',
-                               size:50
-                            }}></Avatar.Image> */}
-                            <Avatar
+                        <Avatar
                                 activeOpacity={0.3}
                                 avatarStyle={{}}
                                 containerStyle={{ backgroundColor: "#8DBDBD" }}
@@ -56,14 +47,14 @@ useEffect(async()=>{
                                 rounded
                                 size="medium"
 
-                                title="O"
+                                title="G"
                                 titleStyle={{}}
                             />
        
                             <View style={{marginLeft:15,}}> 
                                 <Title style={styles.title_name}>{name} </Title>
                                 {/* <Title style={styles.title_lastname}>Pattharacharoenlert</Title> */}
-                                <Caption style={styles.caption}>Owner</Caption>
+                                <Caption style={styles.caption}>Guest</Caption>
                             </View>
                         </View>
                     </View>
@@ -76,13 +67,13 @@ useEffect(async()=>{
                          label="Home"
                          onPress={() =>navigation.navigate('Home')}
                         />
-                        <DrawerItem
+                        {/* <DrawerItem
                         icon={({color,size})=>(
                         <AntDesign name="user" size={size} color={color} />
                             )}
-                         label="Guest"
+                         label="User123"
                          onPress={() =>navigation.navigate('User')}
-                        />
+                        /> */}
                     </Drawer.Section>
                     
                 </View>
@@ -95,7 +86,7 @@ useEffect(async()=>{
                 <AntDesign name="setting" size={size} color={color} />
                 )}
                 label="Setting"
-                onPress={() =>navigation.navigate('Setting')}
+                onPress={() =>navigation.navigate('Home')}
             />
             <DrawerItem
                 icon={({color,size})=>(
@@ -168,24 +159,3 @@ const styles = StyleSheet.create({
         paddingHorizontal:16,
     }
 });
-
-
-
-
-{/* <Avatar
-activeOpacity={0.3}
-avatarStyle={{}}
-containerStyle={{ backgroundColor: "#8DBDBD" }}
-icon={{}}
-iconStyle={{}}
-imageProps={{}}
-onLongPress={() => alert("onLongPress")}
-onPress={() => alert("onPress")}
-overlayContainerStyle={{}}
-placeholderStyle={{}}
-rounded
-size="medium"
-source={{ uri: "" }}
-title="P"
-titleStyle={{}}
-/> */}

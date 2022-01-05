@@ -4,34 +4,72 @@ import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import Face from '../verify/Face';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import t from '../language/lang';
 const {width,height} = Dimensions.get('window');
 
 import md5 from 'blueimp-md5';
 import { LinearGradient } from 'expo-linear-gradient';
 class LockScreen extends Component {
   constructor(props) {
- 
+
     super(props);
     this.state = {
         passcode:['','','','','',''],
-        pin:'e10adc3949ba59abbe56e057f20f883e'
+        pin:'',
+        emp:'',
+      
     };
     
   }
  async componentDidMount () {
-    
+  
     try {
+
         const checkpin = await AsyncStorage.getItem('@pin')
+    //    await AsyncStorage.removeItem('@guest')
+    // removeItem('@guest')
+      
         if(checkpin !== null) {
 
           this.state.pin = checkpin;
           // value previously stored
-       
-        }
+     
+       console.log(this.state.pin)
+        
+    }
       } catch(e) {
           console.log(e)
         // error reading value
       }
+  }
+
+//   async removeItemValue(key) {
+//     try {
+//         await AsyncStorage.removeItem(key);
+//         return true;
+//     }
+//     catch(exception) {
+//         return false;
+//     }
+// }
+//   componentWillReceiveProps
+ componentDidUpdate(nextProps){
+    if(this.props.route.params?.pin != undefined){
+        // this._onPressCancel()
+      
+        this.state.pin = this.props.route.params?.pin
+        console.log(this.state.pin)
+        
+    }
+    // console.log(this.props.route.params?.pin)
+    if(this.state.emp != this.props.route.params?.id){
+        // this._onPressCancel()
+           this.state.emp = this.props.route.params?.id
+           AsyncStorage.setItem('@guest',this.props.route.params?.id)
+          AsyncStorage.setItem('@guestname',this.props.route.params?.name)
+    }
+ 
+
   }
 
 //   getData = async () => {
@@ -48,8 +86,9 @@ class LockScreen extends Component {
 //     }
 //     }
   
-  _onPressNumber = num =>{
-      
+  _onPressNumber  = async(num) =>{
+    const value = await AsyncStorage.getItem('@guest')
+    // console.log(value)
       let tempCode = this.state.passcode;
       let pin = '';
       for(var i = 0 ;i< tempCode.length;i++){
@@ -57,15 +96,29 @@ class LockScreen extends Component {
               tempCode[i] = num;
               pin = tempCode.join("");
               if(pin.length == 6){
- 
+         
                 if(this.state.pin == md5(pin)){
-                    this.props.navigation.navigate('MyDrawer')
-                }else{
+                    
+                
+                    if(value != null ){
+                        alert(value)
+                        this.props.navigation.navigate('GuestDrawer')
+                        
+                    }else{
+                        this.props.navigation.navigate('MyDrawer')
+                    }
+                    
+                    this._onPressCancel();
+                }
+                // else if(){
+                    
+                // }
+                else{
                     alert('Incorrect PIN. Try again.')
                     this._onPressCancel();
                     this.props.navigation.navigate('MyDrawer')
                 }
-            
+                
                 
             }
               break;
@@ -94,7 +147,7 @@ class LockScreen extends Component {
 }
  
   render() {
-    const { navigation } = this.props;
+    const { navigation,route } = this.props;
 
       let numbers =[
           {id:'1'},
@@ -110,6 +163,36 @@ class LockScreen extends Component {
           
           
      ];
+
+     const test = {
+        "lang": "en",
+        "id": "Employee ID",
+        "name": "Name",
+        "date": "Date",
+        "income": "Income",
+        "salary": "Salary",
+        "overtime": "Overtime",
+        "other": "Other",
+        "total_income": "Total Income",
+        "deduction": "Deduction",
+        "tax": "Tax",
+        "social_welfare": "Social Welfare",
+        "advance_payment": "Advance Payment",
+        "loan": "Loan",
+        "total_deduction": "Total Deduction",
+        "cumulative_income": "Cumulative Income",
+        "cumulative_tax": "Cumulative Tax",
+        "account_number": "Account Number",
+        "net_income": "Net Income",
+        "leaving_monthly_report": "Leaving Monthly Report",
+        "personal_leave": "Personal Leave",
+        "sick_leave": "Sick Leave",
+        "absent": "Absent",
+        "late": "Late",
+        "vacation": "Vacation",
+        "annually_cumulative": "Annually Cumulative",
+        "balance": "Balance"
+      }
     return (
    
         <SafeAreaView style={styles.container}>
@@ -127,7 +210,7 @@ class LockScreen extends Component {
             
             <View style={{marginTop:50}}>
                 <View >
-                    <Text style={styles.passcodeText}>Enter Password</Text>
+                    <Text style={styles.passcodeText}>Enter Password {t('name')}</Text>
 
                 </View>
                 <View style={styles.codeContainer}>

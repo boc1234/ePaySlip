@@ -126,8 +126,8 @@ class CreatePass extends Component {
 
         <View style={styles.buttons}>
             <TouchableOpacity  >
-                <Text style={styles.buttonText}  > </Text>
-                {/* <Text style={styles.buttonText} onPress={() => navigation.navigate('Phone')} >Password</Text> */}
+                {/* <Text style={styles.buttonText}  > </Text> */}
+                <Text style={styles.buttonText} onPress={() => navigation.navigate('SignUp')} >Back</Text>
             </TouchableOpacity>
             <TouchableOpacity  onPress = {()=>this._onPressCancel()}>
                  <Text style={styles.buttonText} >Cancel</Text>

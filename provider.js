@@ -1,16 +1,27 @@
 import React from "react"
-
+import AsyncStorage from "@react-native-async-storage/async-storage"
 // const userContextTemplate = {
 //   userName: "ewe",
 // }
 const Picture ={
     pic:'5451'
 }
-
-
+export const URL = "http://10.0.2.2:8080/"
 
 // export const UserContext = React.createContext(userContextTemplate)
 export const PictureContext = React.createContext(Picture)
+
+const Numperiod ={
+    year:'2021',
+    month:'',
+    period:''
+}
+export const NumperiodContext = React.createContext(Numperiod)
+
+
+
+
+
 // export default function ProviderComponent({ children }) {
 //   return (
 //     <UserContext.Provider value={userContextTemplate}>

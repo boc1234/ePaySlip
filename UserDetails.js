@@ -1,34 +1,28 @@
-// import React, { useContext, useState } from "react"
-// import { UserContext } from "./provider"
-// import { StyleSheet, Text, View, TouchableOpacity,Dimensions ,SafeAreaView,StatusBar,TextInput,} from 'react-native';
-// export default function UserDetails() {
-//   const [nextStatus, setNextStatus] = useState("")
-//   const context = useContext(UserContext)
+// import { StatusBar } from 'expo-status-bar';
+// import React,{useState} from 'react';
+// import { StyleSheet, Text, View, Button,SafeAreaView ,SafeAreaProvider} from 'react-native';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
-//   const handleStatusChange = e => {
-//     // e.preventDefault()
-//     setNextStatus('15641')
-//   }
 
-//   const handleSubmit = e => {
-//     // e.preventDefault()
-//     context?.updateStatus(nextStatus)
-//     setNextStatus("156156")
-//   }
+// export default function UserDetail() {
+// const [lang,setLang]=useState('');
+// const  value =  AsyncStorage.getItem('@lang').then(res=>{
+//     setLang(res)
+// })
 
-//   return (
-//     <View>
-//       <Text>Name: {context?.name}</Text>
-//       <Text>Email: {context?.email}</Text>
-//       <Text>Status: {context?.status}</Text>
-//       <TouchableOpacity onSubmit={handleSubmit}>
-//         <TextInput
+//     return (
 
-//           value={nextStatus}
-//           onChangeText={handleStatusChange}
-//         />
-//         <Text >Update status</Text>
-//       </TouchableOpacity>
-//     </View>
-//   )
+//         <View>
+//             <Text>{lang}</Text>
+//         </View>
+//     );
 // }
+
+// const styles = StyleSheet.create({
+//     container: {
+//         flex: 1,
+//         backgroundColor: '#fff',
+//         // alignItems: 'center',
+//         // justifyContent: 'center',
+//     },
+// });

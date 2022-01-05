@@ -14,7 +14,9 @@ export default function CheckFace({ navigation, route}) {
       
     if(route.params?.pic !== undefined){
         const picture = route.params?.pic;
-        const picture_string = JSON.stringify(picture[0].base64);
+        const picture_string = picture.base64;
+       console.log(picture_string)
+        
     return(
     <View style={styles.container}>
         <StatusBar></StatusBar>
@@ -49,6 +51,7 @@ export default function CheckFace({ navigation, route}) {
     if(route.params?.picker !== undefined){
         const picker = route.params?.picker;
         const picker_string = picker.base64
+        console.log(picker_string)
         return(
             <View style={styles.container}>
             <StatusBar></StatusBar>
