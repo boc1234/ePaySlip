@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React,{useEffect,useState} from 'react';
+import React,{useEffect,useState,createContext,useContext} from 'react';
 import SelectDropdown from 'react-native-select-dropdown';
 import { StyleSheet,Dimensions, Text, View, Button,SafeAreaView ,SafeAreaProvider,BackHandler,Alert,TouchableOpacity,Image} from 'react-native';
 import { Card } from 'react-native-paper';
@@ -7,18 +7,37 @@ import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import d from '../assets/images/en.png'
 const {width,height} = Dimensions.get('window');
-
+import {context} from '../provider'
+function Content() {
+    const {language,toggleLanguage}=useContext(context);
+    return(
+        <View>
+            
+            {language}
+            <TouchableOpacity onPress={toggleLanguage}>
+                <Text>test</Text>
+            </TouchableOpacity>
+        </View>
+    ) 
+}
 export default function Language({navigation,route}) {
+const [language,setLanguage] = useState();
 
-    const options = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' }
-      ]
-      const countries = ["English", "Thai", "Myanmar", "Cambodia"]
+
+
+function toggleLanguage() {
+    setLanguage(language=>(language = 1));
+}
+
+const changeLanguage =()=>{
+    
+    AsyncStorage.setItem('@lang','1')
+}
+
     return (
+        // <context.Provider value={{language , toggleLanguage}}>
         <View style={styles.container}>
-        <TouchableOpacity style={styles.list}> 
+        <TouchableOpacity style={styles.list} onPress={changeLanguage} > 
            
             <View >
                 <Text style={styles.textlist}>
@@ -31,9 +50,9 @@ export default function Language({navigation,route}) {
              </View>
   
 
-        </TouchableOpacity> 
+        </TouchableOpacity > 
 
-        <TouchableOpacity style={styles.list}> 
+        <TouchableOpacity style={styles.list} onPress={changeLanguage}> 
            
            <View >
                <Text style={styles.textlist}>
@@ -46,7 +65,7 @@ export default function Language({navigation,route}) {
        </TouchableOpacity> 
 
        
-       <TouchableOpacity style={styles.list}> 
+       <TouchableOpacity style={styles.list}  onPress={changeLanguage}>  
            
            <View >
                <Text style={styles.textlist}>
@@ -57,10 +76,10 @@ export default function Language({navigation,route}) {
          
 
        </TouchableOpacity> 
-      
+      {/* <Content /> */}
         
         </View>
-
+        // </context.Provider>
         
     );
 }

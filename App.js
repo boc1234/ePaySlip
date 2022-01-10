@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React ,{useContext, useEffect, useState}from 'react';
+import React ,{createContext, useContext, useEffect, useState}from 'react';
 import { StyleSheet, Text, View ,Button} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -33,39 +33,44 @@ import axios from 'axios';
 import t from './language/lang';
 import {URL} from './provider'
 import Language from './setting/Language';
+import ChangePin from './setting/ChangePin';
 const Tab = createMaterialTopTabNavigator();
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
-const a = 1;
+export  const a = createContext( AsyncStorage.getItem('@empid'));
 
 export default function App() {
+
+ const {test} = useContext(a);
  
-  // const {Text} = useContext(PictureContext)
-  useEffect(async()=>{
-    const lang = await AsyncStorage.getItem('@lang')
-    if(lang == null){
-      console.log(123)
-      axios.get(URL+"GetLanguage",{
-        params:{
-            lang:'en',
-   
+  useEffect(()=>{
+    try{
+      AsyncStorage.getItem('@lang').then(res=>{
+        if(res != undefined || res == null){
+          AsyncStorage.setItem('@lang','0');
+        }else{
+          alert(1212)
         }
-    
-    })
-    
-    .then(function (response) {
-    
-        AsyncStorage.setItem('@lang',JSON.stringify(response.data))
-        console.log(response.data)
-    });
+      }).catch(err=>{
+        console.log(err)
+      })
+    }catch{
+console.log(54566)
     }
+   
+    
+  
     
   },[]);
-
+ 
   return (
-    <NavigationContainer>
+ 
+      <NavigationContainer>
+
        <MyStack/>
     </NavigationContainer>
+ 
+    
     // <PictureContext.Provider value={123}>
     //   <Text>test</Text>
     // </PictureContext.Provider>
@@ -127,6 +132,7 @@ function MyStack() {
           <Stack.Screen name='Page1' component={Page1} />
           <Stack.Screen name='Setting' component={Setting} />
           <Stack.Screen name='Language' component={Language} />
+          <Stack.Screen name='ChangePIN' component={ChangePin} />
           {/* <Stack.Screen name='LockScreen' component={LockScreen} options={{headerShown:false}}  /> */}
       </Stack.Navigator>
     );

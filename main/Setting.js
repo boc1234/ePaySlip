@@ -18,6 +18,18 @@ export default function Setting({navigation,route}) {
       const countries = ["English", "Thai", "Myanmar", "Cambodia"]
     return (
         <View style={styles.container}>
+        <TouchableOpacity style={styles.list} onPress={()=> navigation.navigate('ChangePIN')}> 
+           
+           <View >
+               <Text style={styles.textlist}>
+                   Change PIN
+               </Text>
+           </View>
+
+
+       </TouchableOpacity>     
+
+
         <TouchableOpacity style={styles.list} onPress={()=> navigation.navigate('Language')}> 
            
             <View >

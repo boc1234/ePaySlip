@@ -5,13 +5,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import SelectDropdown from 'react-native-select-dropdown';
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { NumperiodContext } from '../provider';
+// import { NumperiodContext } from '../provider';
 const { width, height } = Dimensions.get("window");
 import {URL} from '../provider'
 export default function  PayslipMain({navigation}) {
   const citiesDropdownRef = useRef();
   
-    const [numperiod,setNumperiod] = useState(NumperiodContext);
+    // const [numperiod,setNumperiod] = useState(NumperiodContext);
    
    const [empid,setEmpid] = useState()
     const [year,setYear] = useState([]);
@@ -85,8 +85,125 @@ export default function  PayslipMain({navigation}) {
     //   setEmpid(value)
     // });
 
-    useEffect( async()=>{
+    useEffect( ()=>{
+      AsyncStorage.getItem('@guest').then(res=>{
+        // console.log(res)
+        if(res != undefined || res == null){
 
+          //  AsyncStorage.getItem('@guest').then(res=>{
+            axios.get(URL+"GetYearPay",{
+              params:{
+                  id:res
+              }
+          
+          })
+          
+          .then(function (response_year) {
+              // console.log(response.data)
+            
+             setYear(response_year.data)
+             setEnteryear(response_year.data[0].year)
+              try {
+                axios.get(URL+"GetMonthPay",{
+                    params:{
+                        id:res,
+                        year:response_year.data[0].year
+        
+                    }
+                
+                })
+                .then(function (response_month) {
+                    // console.log(response_month.data)
+                    setMonth(response_month.data)
+                    setEntermonth(response_month.data[0].month)
+                    try {
+
+                      axios.get(URL+"GetperiodPay",{
+                          params:{
+                              id:res,
+                              year:response_year.data[0].year,
+                              month:response_month.data[0].month
+                          }
+                      })
+                      .then(function (response_period) {
+                          setPeriod(response_period.data)
+                          setEnterperiod(response_period.data[0].period)
+                      })
+                      
+                    } catch(e) {
+                        console.log(e)
+                      // error reading value
+                    }
+                })
+                
+            } catch(e) {
+                console.log(e)
+              // error reading value
+            }
+              
+          })
+          // })
+
+        }else{
+            
+          AsyncStorage.getItem('@empid').then(res=>{
+            axios.get(URL+"GetYearPay",{
+              params:{
+                  id:res
+              }
+          
+          })
+          
+          .then(function (response_year) {
+              // console.log(response.data)
+            
+             setYear(response_year.data)
+             setEnteryear(response_year.data[0].year)
+              try {
+                axios.get(URL+"GetMonthPay",{
+                    params:{
+                        id:res,
+                        year:response_year.data[0].year
+        
+                    }
+                
+                })
+                .then(function (response_month) {
+                    // console.log(response_month.data)
+                    setMonth(response_month.data)
+                    setEntermonth(response_month.data[0].month)
+                    try {
+
+                      axios.get(URL+"GetperiodPay",{
+                          params:{
+                              id:res,
+                              year:response_year.data[0].year,
+                              month:response_month.data[0].month
+                          }
+                      })
+                      .then(function (response_period) {
+                          setPeriod(response_period.data)
+                          setEnterperiod(response_period.data[0].period)
+                      })
+                      
+                    } catch(e) {
+                        console.log(e)
+                      // error reading value
+                    }
+                })
+                
+            } catch(e) {
+                console.log(e)
+              // error reading value
+            }
+              
+          })
+          
+          })
+        }
+
+
+      })
       // const value = await AsyncStorage.getItem('@empid')
       // setEmpid(JSON.parse(value))
       //   console.log(value)
@@ -98,78 +215,26 @@ export default function  PayslipMain({navigation}) {
 
         
         try {
-          const value = await AsyncStorage.getItem('@empid')
-          const guest_value = await AsyncStorage.getItem('@guest')
+        
 
-          // setYear([
-          //   {
-          //     "year": "2021"
+
+         
+
+
+
+
+
+          setYear([
+            {
+              "year": "2021"
               
-          //   },
-          //   {
-          //     "year": "2022"
+            },
+            {
+              "year": "2022"
               
-          //   }
-          // ])
-            axios.get(URL+"GetYearPay",{
-                params:{
-                    id:value
-                }
-            
-            })
-            
-            .then(function (response_year) {
-                // console.log(response.data)
-              
-               setYear(response_year.data)
-               setEnteryear(response_year.data[0].year)
-                try {
-                  axios.get(URL+"GetMonthPay",{
-                      params:{
-                          id:value,
-                          year:response_year.data[0].year
+            }
+          ])
           
-                      }
-                  
-                  })
-                  
-                  .then(function (response_month) {
-                      // console.log(response_month.data)
-                      setMonth(response_month.data)
-                      setEntermonth(response_month.data[0].month)
-                      try {
-                        axios.get(URL+"GetperiodPay",{
-                            params:{
-                                id:value,
-                                year:response_year.data[0].year,
-                                month:response_month.data[0].month
-                
-                            }
-                        
-                        })
-                        
-                        .then(function (response_period) {
-                          console.log('----------------')
-                          console.log(response_period.data)
-                          console.log('456456456')
-                            console.log(response_period.data[0].period)
-                            setPeriod(response_period.data)
-                            setEnterperiod(response_period.data[0].period)
-                        })
-                        
-                    } catch(e) {
-                        console.log(e)
-                      // error reading value
-                    }
-                  })
-                  
-              } catch(e) {
-                  console.log(e)
-                // error reading value
-              }
-                
-            })
-            
         } catch(e) {
             console.log(e)
           // error reading value

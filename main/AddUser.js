@@ -36,18 +36,23 @@ import {URL} from '../provider'
 export default function AddUser({ navigation,route }) {
   const [data, setdata] = useState("");
   const [open, setOpen] = React.useState(false);
-  useEffect(async() => {
-    const phone = await AsyncStorage.getItem('@phone');
+  useEffect(() => {
+    // const phone = await 
+    AsyncStorage.getItem('@phone').then(res=>{
+      axios.get(URL+"GetGuest",{
+        params:{
+            phone:res
+          
+        }
+      }).then(function(response){
+      console.log(response.data);
+      setdata(response.data);
+      });
+    
+    })
    
-    axios.get(URL+"GetGuest",{
-      params:{
-          phone:phone
-        
-      }
-  }).then(function(response){
-  console.log(response.data);
-  setdata(response.data);
-  });
+   
+
 },[]);
 
 
@@ -140,7 +145,7 @@ const styles = StyleSheet.create({
     // marginTop: StatusBar.currentHeight || 0,
   },
   item: {
-    backgroundColor: '#f9c2ff',
+    backgroundColor: 'rgba(255,255,255,0.4)',
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,

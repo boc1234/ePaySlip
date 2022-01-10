@@ -64,7 +64,7 @@ const [num,setNum] = useState()
             
         <TouchableOpacity style={styles.button}  onPress={requestOTP}>
             
-            <Text style={styles.buttonText}>Sign up</Text>
+            <Text style={styles.buttonText}>Enter</Text>
 
         </TouchableOpacity>
     
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
           
       },
       button:{
-     
+        marginTop:15,
         paddingLeft: 15,
         paddingRight: 15,
         borderRadius: 5,

@@ -11,8 +11,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 const {width,height} = Dimensions.get('window');
 import axios from 'axios';
 import {URL} from '../provider'
+import { context } from '../provider';
 export default function SignIn({ navigation }) {
-
+const lang = useContext(context)
 const [empid, setEmpid] = useState("Y16992");
 const [phone,setPhone] = useState("0899996547");
 const [test,setTest] = useState('');
@@ -20,15 +21,27 @@ const [test,setTest] = useState('');
         navigation.navigate('LockScreen')
         
     }
-    useEffect(async()=>{
+    useEffect(()=>{
+        // console.log(lang)
+        AsyncStorage.getItem('@lang').then(res=>{
+            if(res == undefined || res == null){
+              AsyncStorage.setItem('@lang',0);
+            }
+          }).catch(err=>{
+            console.log(err)
+          })
+          
         try {
-          const value = await AsyncStorage.getItem('@empid')
-          if(value !== null) {
+        //   const value = await 
+          AsyncStorage.getItem('@empid').then(res=>{
+              if(res !== null) {
             navigation.navigate('LockScreen')
             
             // value previously stored
            
-          }
+             }
+          })
+          
         } catch(e) {
           // error reading value
         }

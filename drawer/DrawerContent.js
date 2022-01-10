@@ -12,7 +12,7 @@ import { Avatar } from "react-native-elements";
 export default function DrawerContent({ props,navigation }) {
 const [name,setName] = useState('')
 const [firstcha,setFirstcha] = useState('')
-
+const [language,setLanguage] = useState()
 useEffect(async()=>{
     try {
       const s_name = await AsyncStorage.getItem('@name');
@@ -25,9 +25,17 @@ useEffect(async()=>{
     }
   },[])
      const removeItemValue= async() =>{
+        AsyncStorage.getItem('@lang').then(res=>{
+            setLanguage(res)
+            console.log(language)
+        })
         AsyncStorage.getAllKeys()
         .then(keys => AsyncStorage.multiRemove(keys))
-        .then(() => alert('success'));
+        .then(() =>alert('success'))
+        
+         .then(()=>AsyncStorage.setItem('@lang',0));
+        
+
         navigation.navigate('SignIn')
     }
 
@@ -61,7 +69,7 @@ useEffect(async()=>{
                             />
        
                             <View style={{marginLeft:15,}}> 
-                                <Title style={styles.title_name}>{name} </Title>
+                                <Title style={styles.title_name}>{name}</Title>
                                 {/* <Title style={styles.title_lastname}>Pattharacharoenlert</Title> */}
                                 <Caption style={styles.caption}>Owner</Caption>
                             </View>

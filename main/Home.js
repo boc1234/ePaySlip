@@ -4,11 +4,18 @@ import { StyleSheet, Text, View, Button,SafeAreaView ,SafeAreaProvider,BackHandl
 import { Card } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // const {  DatePicker, Space  } = antd;
+import {a} from '../App'
+import {context} from '../provider';
 
 export default function Home({navigation,route}) {
-  const [test,setTest] = useState('');
+
+
+  const [empid,setEmpid] = useState('');
+  
     useEffect(() => {
-      getData();
+      
+
+    
         const backAction = () => {
           Alert.alert("Hold on!", "Are you sure you want to go back?", [
             {
@@ -30,19 +37,18 @@ export default function Home({navigation,route}) {
         return () => backHandler.remove();
       }, []);
 
-      const getData = async () => {
+     
         try {
-          const value = await AsyncStorage.getItem('@empid')
-          if(value !== null) {
-            setTest(value)
-
-            // value previously stored
-           
-          }
+          AsyncStorage.getItem('@empid').then(res=>{
+             if(res !== null) {
+              setEmpid(res)
+             }
+          })
+         
         } catch(e) {
           // error reading value
         }
-      }
+      
     return (
         <View style={styles.container}>
             {/* <Text>Home1!</Text>
@@ -55,7 +61,7 @@ export default function Home({navigation,route}) {
             <TouchableOpacity onPress={() => navigation.navigate('PaySlip')}>
                 <Card style={styles.card}>
                
-                <Text style={styles.paragraph} >EPAYSLIP</Text>
+                <Text style={styles.paragraph} >EPAYSLIP </Text>
                 {/* <Text style={{flexGrow:2}} >13 November 2020</Text> */}
                 
                 </Card>

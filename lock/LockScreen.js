@@ -5,6 +5,7 @@ import { Feather } from '@expo/vector-icons';
 import Face from '../verify/Face';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import t from '../language/lang';
+
 const {width,height} = Dimensions.get('window');
 
 import md5 from 'blueimp-md5';
@@ -22,7 +23,7 @@ class LockScreen extends Component {
     
   }
  async componentDidMount () {
-  
+ 
     try {
 
         const checkpin = await AsyncStorage.getItem('@pin')
@@ -164,35 +165,6 @@ class LockScreen extends Component {
           
      ];
 
-     const test = {
-        "lang": "en",
-        "id": "Employee ID",
-        "name": "Name",
-        "date": "Date",
-        "income": "Income",
-        "salary": "Salary",
-        "overtime": "Overtime",
-        "other": "Other",
-        "total_income": "Total Income",
-        "deduction": "Deduction",
-        "tax": "Tax",
-        "social_welfare": "Social Welfare",
-        "advance_payment": "Advance Payment",
-        "loan": "Loan",
-        "total_deduction": "Total Deduction",
-        "cumulative_income": "Cumulative Income",
-        "cumulative_tax": "Cumulative Tax",
-        "account_number": "Account Number",
-        "net_income": "Net Income",
-        "leaving_monthly_report": "Leaving Monthly Report",
-        "personal_leave": "Personal Leave",
-        "sick_leave": "Sick Leave",
-        "absent": "Absent",
-        "late": "Late",
-        "vacation": "Vacation",
-        "annually_cumulative": "Annually Cumulative",
-        "balance": "Balance"
-      }
     return (
    
         <SafeAreaView style={styles.container}>
@@ -210,7 +182,8 @@ class LockScreen extends Component {
             
             <View style={{marginTop:50}}>
                 <View >
-                    <Text style={styles.passcodeText}>Enter Password {t('name')}</Text>
+                {/* {t('name')} */}
+                    <Text style={styles.passcodeText}>Enter Password </Text>
 
                 </View>
                 <View style={styles.codeContainer}>

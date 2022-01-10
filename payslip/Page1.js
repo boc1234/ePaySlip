@@ -3,16 +3,17 @@ import React, { useState ,useEffect} from 'react';
 import { StyleSheet, Text, View, Button,SafeAreaView ,SafeAreaProvider} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { NumperiodContext } from '../provider';
+// import { NumperiodContext } from '../provider';
 import t from '../language/lang';
 export default function Page1({navigation,route,props}) {
-  const [num,setNum] = useState(NumperiodContext)
+  // const [num,setNum] = useState(NumperiodContext)
     const [empid,setEmpid] = useState();
     const [name,setName]= useState();
     const [year,setYear] = useState([]);
     const [month,setMonth] = useState([]);
     const [period,setPeriod] = useState([]);
     const [date,setDate] = useState();
+    const [language,setLanguage] = useState();
     // const [payslip,setPayslip] = useState()
    
         
@@ -20,25 +21,32 @@ export default function Page1({navigation,route,props}) {
 
 
     useEffect(()=>{
-      const getData = async () => {
+      // const getData = async () => {
+      AsyncStorage.getItem('@lang').then(res=>{
+        setLanguage(res)
+      })
       try {
-        const value = await AsyncStorage.getItem('@payslip')
-        const payslip = JSON.parse(value)
-        console.log(payslip[0]._6)
+        // const value = await 
+        AsyncStorage.getItem('@payslip').then(res=>{
+          const payslip = JSON.parse(res)
+          console.log(payslip[0]._6)
+           setEmpid(payslip[0].codempid)
+           setName(payslip[0]._6)
+           setDate((payslip[0]._7).slice(0,10))
    
-         setEmpid(payslip[0].codempid)
-         setName(payslip[0]._6)
-         setDate((payslip[0]._7).slice(0,10))
-        console.log('f',empid)
+        })
+      
 
       } catch(e) {
         console.log(e)
         // error reading value
       }
-      const id = await AsyncStorage.getItem('@empid')
-      navigation.setOptions({ title: id })
-    }
-    getData();
+      AsyncStorage.getItem('@empid').then(res=>{
+        navigation.setOptions({ title: res })
+      })
+      
+    // }
+    // getData();
       // setNum._currentValue('2121')
       
    
@@ -60,11 +68,11 @@ export default function Page1({navigation,route,props}) {
     return (
       <View>
       <View>
-        <Text>Employee ID : {empid}</Text>
+        <Text>{t('id')[language]} : {empid}</Text>
       </View>
         
-        <Text>{name}</Text>
-        <Text>{date}</Text></View>
+        <Text>{t('name')[language]} : {name}</Text>
+        <Text>{t('date')[language]} : {date}</Text></View>
     );
 }
 
