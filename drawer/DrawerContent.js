@@ -27,13 +27,15 @@ useEffect(async()=>{
      const removeItemValue= async() =>{
         AsyncStorage.getItem('@lang').then(res=>{
             setLanguage(res)
-            console.log(language)
+            console.log(res)
+
+            AsyncStorage.getAllKeys()
+                .then(keys => AsyncStorage.multiRemove(keys))
+                .then(() =>alert('success'))
+                
+                .then(()=>AsyncStorage.setItem('@lang',res));
         })
-        AsyncStorage.getAllKeys()
-        .then(keys => AsyncStorage.multiRemove(keys))
-        .then(() =>alert('success'))
         
-         .then(()=>AsyncStorage.setItem('@lang',0));
         
 
         navigation.navigate('SignIn')

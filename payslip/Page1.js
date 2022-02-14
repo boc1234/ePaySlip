@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState ,useEffect} from 'react';
-import { StyleSheet, Text, View, Button,SafeAreaView ,SafeAreaProvider} from 'react-native';
+import { StyleSheet, Text, View, Button,SafeAreaView ,SafeAreaProvider,ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 // import { NumperiodContext } from '../provider';
@@ -16,7 +16,16 @@ export default function Page1({navigation,route,props}) {
     const [language,setLanguage] = useState();
     // const [payslip,setPayslip] = useState()
    
-        
+    const [salary,setSalary] = useState();
+    const [overtime,setOvertime] = useState();
+    const [other,setOther] = useState();
+    const [total_income,setTotal_income] = useState();
+
+    const [tax,setTax] = useState();
+    const [social_welfare,setSocial_welfare] = useState();
+    const [ total_deduction,setTotal_deduction] = useState();
+
+    const [net_income,setNet_income] = useState();
    
 
 
@@ -29,11 +38,22 @@ export default function Page1({navigation,route,props}) {
         // const value = await 
         AsyncStorage.getItem('@payslip').then(res=>{
           const payslip = JSON.parse(res)
-          console.log(payslip[0]._6)
-           setEmpid(payslip[0].codempid)
-           setName(payslip[0]._6)
-           setDate((payslip[0]._7).slice(0,10))
-   
+
+          payslip.forEach(element => {
+            setEmpid(element.codempid)
+            setName(element._6)
+            setDate((element._7).slice(0,10))
+
+            setSalary(element._8)
+            setOvertime(element._9)
+            setOther(element._12)
+            setTotal_income(element._13)
+            setTax(element._14)
+            setSocial_welfare(element._16)
+            setTotal_deduction(element._20)
+
+            setNet_income(element._24)
+          });
         })
       
 
@@ -41,10 +61,15 @@ export default function Page1({navigation,route,props}) {
         console.log(e)
         // error reading value
       }
-      AsyncStorage.getItem('@empid').then(res=>{
-        navigation.setOptions({ title: res })
-      })
       
+      //title
+      // AsyncStorage.getItem('@empid').then(res=>{
+      //   navigation.setOptions({ title: res })
+      // })
+      
+
+
+
     // }
     // getData();
       // setNum._currentValue('2121')
@@ -66,21 +91,76 @@ export default function Page1({navigation,route,props}) {
     
 
     return (
-      <View>
-      <View>
-        <Text>{t('id')[language]} : {empid}</Text>
-      </View>
+      <View style={styles.container}>
+        <StatusBar barStyle="light-content"></StatusBar>
+        <ScrollView>
+        <View style={styles.content}> 
+            <Text style={styles.text}>
+              {t('id')[language]}  :  {empid}
+            </Text>
+    
+      
+            <Text style={styles.text}>
+              {t('name')[language]}  :  {name}
+            </Text>
+
         
-        <Text>{t('name')[language]} : {name}</Text>
-        <Text>{t('date')[language]} : {date}</Text></View>
+            <Text style={styles.text}>
+              {t('date')[language]}  :  {date}
+            </Text>
+        </View>
+         
+        <View style={styles.content}>
+            <Text style={styles.header}>{t('income')[language]}</Text>
+            <Text style={styles.text}>{t('salary')[language]}  :  {salary}</Text>
+            <Text style={styles.text}>{t('overtime')[language]}  :  {overtime}</Text>
+            <Text style={styles.text}>{t('other')[language]}  :  {other}</Text>
+            <Text style={styles.text2}>{t('total_income')[language]}  :  {total_income}</Text>
+        </View>
+            
+        <View style={styles.content}>
+            <Text style={styles.header}>{t('deduction')[language]}</Text>
+            <Text style={styles.text}>{t('tax')[language]}  :  {tax}</Text>
+            <Text style={styles.text}>{t('social_welfare')[language]}  :  {social_welfare}</Text>
+            <Text style={styles.text2}>{t('total_deduction')[language]}  :  {total_deduction}</Text>
+        </View>
+
+        <View style={styles.content}>
+            <Text style={styles.total}>{t('net_income')[language]}  :  {net_income}</Text>
+        </View>
+        </ScrollView>
+      </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        // alignItems: 'center',
+        backgroundColor: 'rgb(140, 188, 193);',
+        // alignItems: 'center',#00adb5
         // justifyContent: 'center',
     },
+    content:{
+      margin:10,
+      backgroundColor:'rgba(255,255,255,0.4)',
+      padding:20
+    },
+    header:{
+      fontSize:20,
+      fontWeight:'bold',
+      marginBottom:5
+      
+    },
+    text:{
+      // margin:10,
+      fontSize:18,
+    },
+    text2:{
+      // margin:10,
+      fontSize:18,
+      // fontWeight:'1900'
+    },
+    total:{
+      fontSize:26,
+    }
 });

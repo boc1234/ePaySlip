@@ -63,8 +63,8 @@ export default function Page2({navigation}) {
     return (
 
         <View>
-            <Text>{t('salary')[language]} : {salary}</Text>
-            <Text>{t('overtime')[language]} : {overtime}</Text>
+             <Text>{t('salary')[language]} : {salary}</Text>
+           <Text>{t('overtime')[language]} : {overtime}</Text>
             <Text>{t('other')[language]} : {other}</Text>
             <Text>{t('total_income')[language]} : {total_income}</Text>
 

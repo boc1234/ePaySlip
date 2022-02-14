@@ -6,7 +6,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 const Picture ={
     pic:'5451'
 }
-export const URL = "http://localhost:8080/"
+// 
+export const URL = "https://sthq67.stecon.co.th/ePaySlip/"
 export const context = createContext(0)
 // export const UserContext = React.createContext(userContextTemplate)
 export const PictureContext = React.createContext(Picture)

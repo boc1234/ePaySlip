@@ -85,12 +85,12 @@ export default function  PayslipMain({navigation}) {
     //   setEmpid(value)
     // });
 
-    useEffect( ()=>{
+    useEffect(()=>{
       AsyncStorage.getItem('@guest').then(res=>{
-        // console.log(res)
-        if(res != undefined || res == null){
+        console.log(res)
+        if(res == 'undefined' || res == null){
 
-          //  AsyncStorage.getItem('@guest').then(res=>{
+           AsyncStorage.getItem('@guest').then(res=>{
             axios.get(URL+"GetYearPay",{
               params:{
                   id:res
@@ -142,7 +142,7 @@ export default function  PayslipMain({navigation}) {
             }
               
           })
-          // })
+          })
 
         }else{
             

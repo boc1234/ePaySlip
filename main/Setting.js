@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React,{useEffect,useState} from 'react';
+import React,{useEffect,useState,useCallback} from 'react';
 import SelectDropdown from 'react-native-select-dropdown';
 import { StyleSheet,Dimensions, Text, View, Button,SafeAreaView ,SafeAreaProvider,BackHandler,Alert,TouchableOpacity,Image} from 'react-native';
 import { Card } from 'react-native-paper';
@@ -7,15 +7,29 @@ import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import d from '../assets/images/en.png'
 const {width,height} = Dimensions.get('window');
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function Setting({navigation,route}) {
 
-    const options = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' }
-      ]
-      const countries = ["English", "Thai", "Myanmar", "Cambodia"]
+      const [language,setLanguage] = useState('');
+      const countries = ["English", "ไทย", "Myanmar", "Cambodia"]
+
+      useFocusEffect(
+        useCallback(()=>{
+          AsyncStorage.getItem('@lang').then(res=>{
+       
+            setLanguage(res)
+          })
+        })    
+      )
+
+//       useEffect(()=>{
+
+//    console.log(855)
+//         AsyncStorage.getItem('@lang').then(res=>{
+//           setLanguage(res)
+//         })
+//         },[])
     return (
         <View style={styles.container}>
         <TouchableOpacity style={styles.list} onPress={()=> navigation.navigate('ChangePIN')}> 
@@ -40,7 +54,8 @@ export default function Setting({navigation,route}) {
 
             <View style={styles.text}>
                 {/* <Image style={styles.image}  source={require("../assets/images/en.png")}/> */}
-                <Text> English
+                <Text> 
+                    {countries[language]}
                 {/* <AntDesign style={{paddingLeft:20}} name="right" size={10} color="black" /> */}
                 </Text>
                 

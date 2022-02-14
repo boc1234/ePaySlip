@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text ,StyleSheet,SafeAreaView,Image,StatusBar,ImageBackground, Dimensions ,TouchableOpacity} from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
-import Face from '../verify/Face';
+// import Face from '../regis/Face';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const {width,height} = Dimensions.get('window');
 
@@ -10,7 +10,7 @@ import md5 from 'blueimp-md5';
 import { LinearGradient } from 'expo-linear-gradient';
 class ConfirmPass extends Component {
   constructor(props) {
- 
+
     super(props);
     this.state = {
         passcode:['','','','','',''],

@@ -2,7 +2,7 @@ import React , { useState,useEffect }from 'react';
 import i18n from 'i18n-js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import language from './language.json'
-import a from '../App';
+
 
 // export default function t(name) {
 //   const a = {'lang':'en','id':'Employee ID','name':'123'}
@@ -38,5 +38,5 @@ i18n.fallbacks = true;
 return i18n.t(name)
   }
 
-  export default  t 
+  export default  t
     

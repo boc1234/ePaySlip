@@ -6,8 +6,11 @@ import { FontAwesome } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import md5 from 'blueimp-md5';
 import * as Notifications from 'expo-notifications';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const {width,height} = Dimensions.get('window');
 
 
@@ -19,7 +22,8 @@ Notifications.setNotificationHandler({
     }),
   });
   
-export default function Phone({ navigation }) {
+export default function ForgotPin({ navigation }) {
+     const [empid , setEmpid] = useState('')
      const [timerCount, setTimer] = useState(0)
      const [timeDisabled , setTimeDisabled] = useState(false);
      const [expoPushToken, setExpoPushToken] = useState('');
@@ -28,6 +32,8 @@ export default function Phone({ navigation }) {
      const responseListener = useRef();
 
      useEffect(() => {
+       setEmpid(AsyncStorage.getItem('@empid'))
+       
         registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
     
         notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
@@ -82,15 +88,15 @@ export default function Phone({ navigation }) {
       async function sendPushNotification(expoPushToken) {
   
         var random = Math.floor(100000 + Math.random() * 900000)
-        
+        AsyncStorage.removeItem('@lock')
         const message = {
           to: expoPushToken,
           sound: 'default',
           title: 'Original Title',
-          body: 'Your PIN:'+ random,
+          body: 'Your Password PIN:'+random,
           data: { someData: 'goes here' },
         };
-      
+      console.log(JSON.stringify(message))
         await fetch('https://exp.host/--/api/v2/push/send', {
           method: 'POST',
           headers: {
@@ -104,18 +110,21 @@ export default function Phone({ navigation }) {
           let formData = new FormData();
           formData.append('empid','Y11111')
           formData.append('phone','098765432')
-          formData.append('new_pin',random)
+          formData.append('new_pin',md5(random))
           axios.post(URL+'ForgotPin', formData, {
               headers: {
                 'Content-Type': 'multipart/form-data'
               }
+            }).then(res=>{
+            
+            //    AsyncStorageLib.removeItem('@lock')
             });
           countdown();
             navigation.navigate('ChangePIN')
         });
       }
       function countdown() {
-        setTimer(20)
+        setTimer(30)
         let interval = setInterval(() => {
           setTimer(lastTimerCount => {
               lastTimerCount <= 1 && clearInterval(interval)
@@ -144,7 +153,7 @@ export default function Phone({ navigation }) {
             </View> */}
            
             <View style={{marginBottom:20}} >
-                    <Text style={styles.text}>กรอกหมายเลขโทรศัพท์มือถือ</Text>
+                    <Text style={styles.text}>กรอกหมายเลขโทรศัพท์มือถือ </Text>
                         <TextInput
                          style={styles.input}
                     

@@ -22,9 +22,13 @@ useEffect(async()=>{
     }
   },[])
      const removeItemValue= async() =>{
-        await AsyncStorage.removeItem('@guest')
-        .then(() => alert('success'));
-        navigation.navigate('MyDrawer')
+        await AsyncStorage.removeItem('@guest').then(res=>{
+            AsyncStorage.setItem('@guest','undefined')
+            alert('success');
+            navigation.navigate('MyDrawer');
+        })
+        // .then(() => alert('success'));
+        // navigation.navigate('MyDrawer')
     }
 
     return (
@@ -86,14 +90,14 @@ useEffect(async()=>{
                 <AntDesign name="setting" size={size} color={color} />
                 )}
                 label="Setting"
-                onPress={() =>navigation.navigate('Home')}
+                onPress={() =>navigation.navigate('Setting')}
             />
             <DrawerItem
                 icon={({color,size})=>(
                     <MaterialIcons name="logout" size={size} color={color} />
                     
                 )}
-                label="Logout"
+                label="Exit"
                 onPress={removeItemValue}
             />
          </Drawer.Section>

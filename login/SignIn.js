@@ -12,6 +12,7 @@ const {width,height} = Dimensions.get('window');
 import axios from 'axios';
 import {URL} from '../provider'
 import { context } from '../provider';
+import t from '../language/lang'
 export default function SignIn({ navigation }) {
 const lang = useContext(context)
 const [empid, setEmpid] = useState("Y16992");
@@ -24,8 +25,9 @@ const [test,setTest] = useState('');
     useEffect(()=>{
         // console.log(lang)
         AsyncStorage.getItem('@lang').then(res=>{
-            if(res == undefined || res == null){
-              AsyncStorage.setItem('@lang',0);
+           
+            if(res == 'undefined'){
+              AsyncStorage.setItem('@lang','0');
             }
           }).catch(err=>{
             console.log(err)
@@ -34,6 +36,7 @@ const [test,setTest] = useState('');
         try {
         //   const value = await 
           AsyncStorage.getItem('@empid').then(res=>{
+
               if(res !== null) {
             navigation.navigate('LockScreen')
             
@@ -46,40 +49,10 @@ const [test,setTest] = useState('');
           // error reading value
         }
       },[])
-    //  React.useEffect(() => {
-     
-    //     var date = new Date();
-    //     date.setHours(date.getHours()+1)
-    
-    //     // const encrypt:string = btoa(datatest)
 
-    //     axios.get("https://localhost:44336/GetPaySlip",{
-    //         params:{
-    //             id:'Y14112'
-    //         }
-        
-    //     })
-        
-    //     .then(function (response) {
-    //      console.log(response.data);
-    //         console.log(response.data[0])
-       
-          
-    //     })
-    //     .catch(function (error) {
-    //     console.log(error)
-    //     console.log(123)
-    //     }).then(function (res){
-         
-    //     })
-    //     // if (route.params?.post) {
-    //     //   // Post updated, do something with `route.params.post`
-    //     //   // For example, send the post to the server
-    //     // }
-    //   }, []);
     const add = ()=>{
         navigation.navigate({
-          name: 'SignUp',
+          name: 'Otp',
           params: { stat: 1 },
           merge: true,
         });
@@ -87,13 +60,13 @@ const [test,setTest] = useState('');
       
 
       const checkLogin = async()=>{
-        // navigation.navigate({
-        //     name: 'LockScreen',
 
-        //   });
-        console.log(empid)
-       console.log(phone)
-        axios.get(URL+"CheckLogin",{
+        navigation.navigate({
+            name: 'LockScreen',
+
+          });
+
+        axios.get(URL+"Login",{
             params:{
                 id:empid,
                 phone:phone
@@ -102,9 +75,9 @@ const [test,setTest] = useState('');
         })
         
         .then(function (response) {
-       console.log(response.data.empid)
+
             if(response.data.empid != '' && response.data.empid != undefined){
-                console.log(response.data)
+      
                 try {
                      AsyncStorage.setItem('@phone',response.data.phonenum)
                      AsyncStorage.setItem('@empid',response.data.empid)
@@ -115,6 +88,7 @@ const [test,setTest] = useState('');
                       });
                   } catch (e) {
                     // saving error
+                    
                     console.log(e)
                   }
 
@@ -126,7 +100,7 @@ const [test,setTest] = useState('');
             }
         
         }).then(function(response){
-            console.log(response.data.namempt)
+            
             AsyncStorage.setItem('@name',response.data.namempt)
         })
 
@@ -136,7 +110,8 @@ const [test,setTest] = useState('');
         })
         .catch(function (error) {
         console.log(error)
-        console.log(123)
+      
+
         navigation.navigate('LockScreen')
         }).then(function (res){
  
@@ -162,10 +137,11 @@ const [test,setTest] = useState('');
         
         // <SafeAreaView style={styles.container}>
          <LinearGradient colors={['#095379','#00adb5']}  style={styles.container} >
+           <StatusBar barStyle="light-content"></StatusBar>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}  >
             
         {/* <ScrollView > */}
-        {/* <StatusBar barStyle="light-content"></StatusBar> */}
+        
      
         <View style={{padding: 24, flex: 1,}}>
         {/* justifyContent:'space-around' */}

@@ -6,9 +6,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Face from './verify/Face';
-import CheckFace from './verify/CheckFace';
-import IDCard from './verify/IDCard';
+import Face from './regis/Face';
+import CheckFace from './regis/CheckFace';
+import IDCard from './regis/IDCard';
 import LockScreen from './lock/LockScreen';
 import CreatePass from './lock/CreatePass';
 import ConfirmPass from './lock/ConfirmPass';
@@ -27,13 +27,16 @@ import UserDetails from './UserDetails';
 import { PictureContext } from './provider';
 import DrawerContent from './drawer/DrawerContent';
 import DrawerGuest from './drawer/DrawerGuest';
-import Otp from './verify/Otp';
-import VerifyOtp from './verify/VerifyOtp';
+import Otp from './regis/Otp';
+import VerifyOtp from './regis/VerifyOtp';
 import axios from 'axios';
 import t from './language/lang';
 import {URL} from './provider'
 import Language from './setting/Language';
 import ChangePin from './setting/ChangePin';
+import ForgotPin from './lock/ForgotPin';
+import CreatePin from './regis/CreatePin';
+import Emp from './regis/Emp';
 const Tab = createMaterialTopTabNavigator();
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -44,19 +47,19 @@ export default function App() {
  const {test} = useContext(a);
  
   useEffect(()=>{
-    try{
-      AsyncStorage.getItem('@lang').then(res=>{
-        if(res != undefined || res == null){
-          AsyncStorage.setItem('@lang','0');
-        }else{
-          alert(1212)
-        }
-      }).catch(err=>{
-        console.log(err)
-      })
-    }catch{
-console.log(54566)
-    }
+//     try{
+//       AsyncStorage.getItem('@lang').then(res=>{
+//         if(res != undefined || res == null){
+//           AsyncStorage.setItem('@lang','0');
+//         }else{
+//           alert(1212)
+//         }
+//       }).catch(err=>{
+//         console.log(err)
+//       })
+//     }catch{
+// console.log(54566)
+//     }
    
     
   
@@ -85,7 +88,7 @@ function MyDrawer() {
 
     <Drawer.Navigator drawerContent={props =><DrawerContent {...props}/>} >
       
-      <Drawer.Screen name="Home" component={Home} />
+      <Drawer.Screen name="Home" component={Home}options={{headerStyle:{backgroundColor:'rgb(140, 188, 193);'}}} />
       <Drawer.Screen name="User" component={AddUser} options={{title:"Guest"}}/>
       <Drawer.Screen name="EPaySlip" component={Toptab} />
       {/* <Drawer.Screen name="Setting" component={Setting} /> */}
@@ -98,7 +101,7 @@ function GuestDrawer() {
 
     <Drawer.Navigator drawerContent={props =><DrawerGuest {...props}/>} >
       
-      <Drawer.Screen name="Home" component={Home} />
+      <Drawer.Screen name="Home" component={Home} options={{headerStyle:{backgroundColor:'rgb(140, 188, 193);'}}}/>
       <Drawer.Screen name="User" component={AddUser}  />
       <Drawer.Screen name="EPaySlip1" component={Toptab} />
       
@@ -115,24 +118,26 @@ function MyStack() {
           
           <Stack.Screen name='SignIn' component={SignIn} options={{headerShown:false,}}  />
           <Stack.Screen name='LockScreen' component={LockScreen} options={{headerShown:false}}  />
-          <Stack.Screen name='SignUp' component={SignUp} options={{headerTintColor: 'white',headerStyle:{backgroundColor:'#095379'}}} />
+          <Stack.Screen name='SignUp' component={SignUp} options={{headerTintColor: 'white',headerStyle:{backgroundColor:'rgb(140, 188, 193);'}}} />
           <Stack.Screen name='Face' component={Face}  options={{title: 'face',headerTintColor: 'white',headerStyle:{backgroundColor:'black'}}} />
           <Stack.Screen name='Otp' component={Otp} />
           <Stack.Screen name='VerifyOtp' component={VerifyOtp} />
+          <Stack.Screen name='Emp' component={Emp} />
           <Stack.Screen name='IDCard' component={IDCard} options={{title:"Profile" ,headerRight:()=>(<Button title={"Done"}/>)}} />
-          <Stack.Screen name='CreatePass' component={CreatePass} options={{headerShown:false}}  />
+          <Stack.Screen name='CreatePin' component={CreatePin} options={{title:"PIN"}}  />
           <Stack.Screen name='ConfirmPass' component={ConfirmPass} options={{headerShown:false}}  />
           <Stack.Screen name='CheckFace' component={CheckFace}  options={{title: 'check',headerTintColor: 'white',headerStyle:{backgroundColor:'black'}}} />
           <Stack.Screen name='ID' component={ID} options={{ title: 'Employee ID' }}  />
-          <Stack.Screen name='Phone' component={Phone}   options={{title: 'Forgot Password',headerTintColor: 'white',headerStyle:{backgroundColor:'#095379'}}} />
+          <Stack.Screen name='ForgotPin' component={ForgotPin}   options={{title: 'Forgot Password',headerTintColor: 'white',headerStyle:{backgroundColor:'#095379'}}} />
           <Stack.Screen name='EPAYSLIP' component={Toptab}   />
           <Stack.Screen name='MyDrawer' component={MyDrawer} options={{headerShown:false}}  />
           <Stack.Screen name='GuestDrawer' component={GuestDrawer} options={{headerShown:false}}  />
           <Stack.Screen name='PaySlip' component={PayslipMain} />
-          <Stack.Screen name='Page1' component={Page1} />
+          <Stack.Screen name='Page1' component={Page1} options={{headerStyle:{backgroundColor:'rgb(140, 188, 193);'}}} />
           <Stack.Screen name='Setting' component={Setting} />
           <Stack.Screen name='Language' component={Language} />
           <Stack.Screen name='ChangePIN' component={ChangePin} />
+          
           {/* <Stack.Screen name='LockScreen' component={LockScreen} options={{headerShown:false}}  /> */}
       </Stack.Navigator>
     );

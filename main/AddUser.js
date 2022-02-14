@@ -58,7 +58,7 @@ export default function AddUser({ navigation,route }) {
 
 const add = ()=>{
   navigation.navigate({
-    name: 'SignUp',
+    name: 'Otp',
     params: { stat: 0 },
     merge: true,
   });
@@ -72,11 +72,10 @@ const click = (id)=>{
       
     }
 }).then(function(response){
-  console.log(response.data.namempt);
-  console.log(id.pin)
+  AsyncStorage.setItem('@guest',id.empid)
   navigation.navigate({
     name: 'LockScreen',
-    params: { id: id.empid,pin:id.pin,name: response.data.namempt},
+    params: { id:id.empid ,pin:id.pin ,name:response.data.namempt},
     merge: true,
   });
 })
@@ -141,7 +140,7 @@ const click = (id)=>{
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 10
+    // marginTop: 10
     // marginTop: StatusBar.currentHeight || 0,
   },
   item: {
@@ -170,5 +169,5 @@ const styles = StyleSheet.create({
   }
 });
 
-// export default AddUser;
+// export default AddUser; 
 

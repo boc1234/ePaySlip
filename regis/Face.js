@@ -10,7 +10,7 @@ import { PictureContext } from '../provider';
 import { Button } from 'react-native-paper';
 import { useIsFocused } from '@react-navigation/native';
 
-export default function Face({ navigation }) {
+export default function Face({ navigation,route }) {
   // const context = createContext(PictureContext)
   const {isFocused} = useIsFocused();
 const value = useContext(PictureContext)
@@ -62,8 +62,8 @@ const reload = async()=>{
 
     // }
     navigation.navigate({
-      name: 'CheckFace',
-      params: { pic: picture },
+      name: 'CreatePin',
+      params: { pic: picture,phone:route.params?.phone,empid:route.params?.empid,idcard:route.params?.idcard,stat:route.params?.stat  },
       merge: true,
     });
   

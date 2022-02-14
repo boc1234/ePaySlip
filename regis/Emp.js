@@ -8,55 +8,43 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import d from '../assets/images/en.png'
 import axios from 'axios';
 const {width,height} = Dimensions.get('window');
-import md5 from 'blueimp-md5';
 import { URL } from '../provider';
-export default function ChangePin({navigation,route}) {
+
+
+export default function Emp({navigation,route}) {
 const [empid , setEmpid]= useState('');
-const [old_pin , setOld_pin] = useState('');
-const [new_pin , setNew_pin] = useState('');
-const [confirm_pin , setConfirm_pin] = useState('');
+
+const [idcard , setIdcard] = useState('');
+const [passport , setPassport] = useState('');
 
 
     useEffect(()=>{
      
     },[]);
 
-
-
-const ResetPin =async()=>{
-    const id = await AsyncStorage.getItem('@empid');   
-    if(new_pin == confirm_pin){
-        alert(1)
-        let formData = new FormData();
-        formData.append('empid',id)
-        formData.append('old_pin',md5(old_pin))
-        formData.append('new_pin',md5(confirm_pin))
-        axios.post(URL+'ResetPin', formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data'
-            }
-          });
+const next= () =>{
     
-    }
+        navigation.navigate({
+            name: 'Face',
+            params: { phone:route.params?.phone,empid:empid,idcard:idcard,stat:route.params?.stat },
+            merge: true,
+          });
   
+        
 }
-
     return (
         <View style={styles.container}>
-            <View style={{marginTop:10}}>
-                {/* <Text>Current PIN</Text> */}
-                <TextInput style={styles.textInput} onChangeText={old_pin=> setOld_pin(old_pin)} keyboardType={'phone-pad'} secureTextEntry={true} placeholder={"Current PIN"}></TextInput>
-            </View>
+      
             <View style={{marginTop:15}}>
                 {/* <Text>New PIN</Text> */}
-                <TextInput style={styles.textInput}onChangeText={new_pin=> setNew_pin(new_pin)}  keyboardType={'phone-pad'} secureTextEntry={true} placeholder={"New PIN"}></TextInput>
+                <TextInput style={styles.textInput}onChangeText={id=> setEmpid(id)}    placeholder={"Employee ID"}></TextInput>
             </View>
             <View>
                 {/* <Text>Confirm PIN</Text> */}
-                <TextInput style={styles.textInput}onChangeText={confirm_pin=> setConfirm_pin(confirm_pin)}  keyboardType={'phone-pad'} secureTextEntry={true} placeholder={"Confirm PIN"}></TextInput>
+                <TextInput style={styles.textInput}onChangeText={idcard=> setIdcard(idcard)}  placeholder={"citizen id / passport no"}></TextInput>
             </View>
-            <TouchableOpacity style={styles.button} onPress={ResetPin}>
-                <Text  style={styles.textButton}>Reset</Text>
+            <TouchableOpacity style={styles.button} onPress={next}>
+                <Text  style={styles.textButton}>Next</Text>
             </TouchableOpacity>
         
         </View>
