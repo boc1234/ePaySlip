@@ -9,9 +9,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 const {width,height} = Dimensions.get('window');
 // const {  DatePicker, Space  } = antd;
-
+import Moment from 'moment';
 import {context} from '../provider';
-
+import CurrencyInput from 'react-native-currency-input';
 export default function Home({navigation,route}) {
 
   const [language,setLanguage] = useState('');
@@ -30,28 +30,28 @@ export default function Home({navigation,route}) {
     
 )
     useEffect(() => {
-    console.log(route)
-      AsyncStorage.getItem('@guest').then(res=>{
 
+      AsyncStorage.getItem('@guest').then(res=>{
+        console.log(res)
         setGuest(res)
         
 
 
        
-        if(  route.params?.check == 1  ){
+      //   if(  route.params?.check == 1  ){
       
-         axios.get(URL+"GetPaySlip2",{
-           params:{
-               id:res
+      //    axios.get(URL+"GetPaySlip2",{
+      //      params:{
+      //          id:res
              
-           }
-         }).then(function(response){
+      //      }
+      //    }).then(function(response){
 
-         setdata(response.data);
-         });
-       }else{
+      //    setdata(response.data);
+      //    });
+      //  }else{
    
-         AsyncStorage.getItem('@empid').then(res=>{
+         AsyncStorage.getItem('@choose').then(res=>{
            axios.get(URL+"GetPaySlip2",{
              params:{
                  id:res
@@ -63,7 +63,7 @@ export default function Home({navigation,route}) {
            });
          
          })
-       }
+      //  }
        })
 
         const backAction = () => {
@@ -98,14 +98,37 @@ export default function Home({navigation,route}) {
           // error reading value
         }
       
-
+        // const numberFormat = (value) =>
+        // new Intl.NumberFormat('th-TH', {
+        //   style: 'currency',
+        //   currency: 'THB'
+        // }).format(value);
 
         const Item = ({ total ,onPress ,value,date}) => (
           <Card style={styles.card}>
-            <TouchableOpacity onPress={onPress}>
-            <Text  style={styles.title}>EPAYSLIP</Text>
-            <Text>{t('date')[language]}  {date.slice(0,10)}</Text>
-            <Text>{t('total_income')[language]} : {total}</Text>
+            <TouchableOpacity style={{justifyContent:"space-between",alignItems:"center"}} onPress={onPress}>
+            <View  style={styles.title}>
+            <Text style={{fontSize:18}}>{t('date')[language]} : {Moment(date).format('DD-MMM-YYYY')}</Text>
+
+            <View style={styles.row}>
+            <Text style={{fontSize:18}}>{t('net_income')[language]} : </Text>
+            <CurrencyInput
+              value={total}
+              // onChangeValue={setValue}
+              // prefix="$"
+              style={{color:'black',fontSize:18}}
+              delimiter=","
+              separator="."
+              precision={2}
+              editable = {false}
+              onChangeText={(formattedValue) => {
+                
+              }}
+            />
+            </View>
+            
+            </View>
+            {/* <Text >{t('total_income')[language]} : {numberFormat(total)}</Text> */}
             </TouchableOpacity>
           </Card>
         );
@@ -164,7 +187,7 @@ export default function Home({navigation,route}) {
             <View style={{marginTop:15}}>
             <TouchableOpacity onPress={() => navigation.navigate('PaySlip')}>
                 <Card style={styles.card}>
-                <Text style={styles.paragraph} >EPAYSLIP</Text>
+                <Text style={styles.paragraph} >PAYSLIP</Text>
                 </Card>
             </TouchableOpacity>
             </View>
@@ -225,6 +248,10 @@ const styles = StyleSheet.create({
       marginVertical:15,
     },
     title: {
-      fontSize: 23,
+      // fontSize: 29,
     },
+    row:{
+      justifyContent: 'space-between',
+      flexDirection: 'row',
+    }
 });

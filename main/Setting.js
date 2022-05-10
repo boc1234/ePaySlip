@@ -6,6 +6,7 @@ import { Card } from 'react-native-paper';
 import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import d from '../assets/images/en.png'
+import ver from '../app.json'
 const {width,height} = Dimensions.get('window');
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -36,7 +37,7 @@ export default function Setting({navigation,route}) {
            
            <View >
                <Text style={styles.textlist}>
-                   Change PIN
+                 Change PIN
                </Text>
            </View>
 
@@ -44,7 +45,7 @@ export default function Setting({navigation,route}) {
        </TouchableOpacity>     
 
 
-        <TouchableOpacity style={styles.list} onPress={()=> navigation.navigate('Language')}> 
+        <TouchableOpacity style={styles.list} onPress={()=> navigation.navigate({name: 'Language',params: { status: 1 },merge: true,})}> 
            
             <View >
                 <Text style={styles.textlist}>
@@ -63,6 +64,18 @@ export default function Setting({navigation,route}) {
 
         </TouchableOpacity> 
 
+        <TouchableOpacity style={styles.list}onPress={()=> navigation.navigate('ChangeNumber')} > 
+           
+           <View >
+               <Text style={styles.textlist}>
+                   Change Phone Number
+               </Text>
+           </View>
+
+      
+
+       </TouchableOpacity> 
+
         <TouchableOpacity style={styles.list}> 
            
            <View >
@@ -73,7 +86,7 @@ export default function Setting({navigation,route}) {
 
            <View style={styles.text}>
    
-               <Text>v1.0</Text>
+               <Text >{ver.expo.version}</Text>
             </View>
 
        </TouchableOpacity> 
@@ -120,7 +133,9 @@ const styles = StyleSheet.create({
       image:{
         margin:3,
           width:20,
-          height:15
+          height:15,
+          fontSize:20
+          
       },
       list:{
         flexDirection:'row',

@@ -4,8 +4,8 @@ import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import Face from '../regis/Face';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-
+import axios from 'axios';
+import {URL} from '../provider'
 const {width,height} = Dimensions.get('window');
 
 import md5 from 'blueimp-md5';
@@ -24,27 +24,15 @@ class LockScreen extends Component {
     
   }
  async componentDidMount () {
- 
+
+
     try {
 
-        // const checkpin = await AsyncStorage.getItem('@pin')
-        // console.log('ererers')
-        // console.log(checkpin)
-        // console.log(this.state.pin)
-        AsyncStorage.getItem('@pin').then(res=>{
+
+        AsyncStorage.getItem('@choosepin').then(res=>{
             this.state.pin = res;
         })
-    //    await AsyncStorage.removeItem('@guest')
-    // removeItem('@guest')
-      
-    //     if(checkpin !== null) {
 
-    //       this.state.pin = checkpin;
-    //       // value previously stored
-     
-    //    console.log(this.state.pin)
-        
-    // }
       } catch(e) {
           console.log(e)
         // error reading value
@@ -63,11 +51,17 @@ class LockScreen extends Component {
 //   componentWillReceiveProps
  componentDidUpdate(nextProps){
     try{
-        if(this.state.pin == undefined){
-            AsyncStorage.getItem('@pin').then(res=>{
+        // if(this.state.pin == undefined){
+            AsyncStorage.getItem('@choosepin').then(res=>{
                 this.state.pin = res;
+                console.log(res)
+                if(res == undefined){
+                    AsyncStorage.getItem('@pin').then(res=>{
+                        this.state.pin = res
+                    })
+                }
             })
-        }
+        // }
          if(this.props.route.params?.pin != undefined){
 
         
@@ -114,7 +108,8 @@ class LockScreen extends Component {
   _onPressNumber  = async(num) =>{
     const value = await AsyncStorage.getItem('@guest')
     const lock = await AsyncStorage.getItem('@lock')
-
+   
+    const choose = await AsyncStorage.getItem('@choose')
     // this.state.passcode = 'c33367701511b4f6020ec61ded352059';
     if(lock == null){
   
@@ -128,22 +123,38 @@ class LockScreen extends Component {
 
                 if(this.state.pin == md5(pin)){
                     this.state.count = 0
-                    AsyncStorage.getItem('@guest').then(res=>{
+                    
+
+                    AsyncStorage.getItem('@empid').then(async res=>{
+
+                        let formData = new FormData();
+                        formData.append('empid',choose)
+                        formData.append('function_name','PIN')
+                        formData.append('status','success')
+                        formData.append('detail','success')
+              
+                        axios.post(URL+'Log', formData, {
+                          headers: {
+                            'Content-Type': 'multipart/form-data'
+                          }
+                        })
+                        let a = await AsyncStorage.getItem('@screen');
      
-                        if(res === this.props.route.params?.id  ){
-                            alert(1)
+   
+                        if(a == 'multi'  ){
+                     
                             // this.props.navigation.navigate('GuestDrawer')
                             this.props.navigation.navigate({
-                                name:'GuestDrawer',
-                                params:{check:1},
+                                name:'MyDrawer',
+                                params:{check:0},
                                 merge:true
                             })
       
                         }else{
-                            alert(0)
+                        
                             this.props.navigation.navigate({
                                 name:'MyDrawer',
-                                params:{check:0},
+                                params:{check:1},
                                 merge:true
                             }
                             )
@@ -163,10 +174,36 @@ class LockScreen extends Component {
                 // }
                 else{
                     this.state.count++
+                    // AsyncStorage.getItem('@empid').then(res=>{
                     if(this.state.count >= 3){
                         AsyncStorage.setItem('@lock','1')
+                        let formData = new FormData();
+                        formData.append('empid',choose)
+                        formData.append('function_name','PIN')
+                        formData.append('status','fail')
+                        formData.append('detail','PIN lock')
+              
+                        axios.post(URL+'Log', formData, {
+                          headers: {
+                            'Content-Type': 'multipart/form-data'
+                          }
+                        })
                     }
+                    
+                   
 
+                        let formData = new FormData();
+                        formData.append('empid',choose)
+                        formData.append('function_name','PIN')
+                        formData.append('status','fail')
+                        formData.append('detail','Incorrect PIN ['+this.state.count+']')
+              
+                        axios.post(URL+'Log', formData, {
+                          headers: {
+                            'Content-Type': 'multipart/form-data'
+                          }
+                        })
+                    // })
                     alert('Incorrect PIN. Try again.'+this.state.count)
                     this._onPressCancel();
 
@@ -184,10 +221,10 @@ class LockScreen extends Component {
       
       this.setState({passcode:tempCode})
     }else{
-        alert('รหัส PIN ไม่ถูกต้องเกินจำนวนครั้งที่กำหนด')
-
-        this.props.navigation.navigate('ForgotPin')
+        // alert('รหัส PIN ไม่ถูกต้องเกินจำนวนครั้งที่กำหนด')
         this.createAlert();
+
+        
         
     }
     //  alert(this.state.passcode)
@@ -213,11 +250,19 @@ class LockScreen extends Component {
       [
         {
           text: "Cancel",
-          onPress: () =>  this.props.navigation.navigate('MyDrawer'),
+        //   onPress: () =>  this.props.navigation.navigate('MyDrawer'),
           style: "cancel"
         },
-        { text: "OK", onPress: () => 
-        this.props.navigation.navigate('ForgotPin')}
+        { text: "OK", onPress: () => {
+         
+            this.state.count = 0
+            //  AsyncStorage.getItem('@lock').then(res=>{
+            //      console.log(1)
+            //  })
+            console.log(this.state.count)
+            
+       
+        this.props.navigation.navigate('ForgotPin')}}
       ]
     );
 

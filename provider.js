@@ -8,6 +8,8 @@ const Picture ={
 }
 // 
 export const URL = "https://sthq67.stecon.co.th/ePaySlip/"
+// export const URL = "http://10.0.2.2:8080/"
+// export const URL = "http://localhost:8080/"
 export const context = createContext(0)
 // export const UserContext = React.createContext(userContextTemplate)
 export const PictureContext = React.createContext(Picture)

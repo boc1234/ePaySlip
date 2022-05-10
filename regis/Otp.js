@@ -8,10 +8,11 @@ import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
 import {URL} from '../provider'
 import PhoneInput from "react-native-phone-number-input";
+import { Feather } from '@expo/vector-icons';
 const {width,height} = Dimensions.get('window');
 
 export default function Otp({ navigation ,route}) {
-const [num,setNum] = useState()
+const [num,setNum] = useState('')
 const [timerCount, setTimer] = useState(0)
 const [modalVisible, setModalVisible] = useState(false);
 const inputRef1 = useRef(null);
@@ -23,16 +24,17 @@ const inputRef6 = useRef(null);
 const [value, setValue] = useState("");    
 const [otp,setOtp] = useState(['','','','','',''])
     const requestOTP = ()=>{
-        countdown();
+      // navigation.navigate({
+      //   name: 'VerifyOtp',
+      //   params: { phone:num ,stat:route.params?.stat},
+      //   merge: true,
+      // });
         console.log(num)
-
-        // navigation.navigate({
-        //   name: 'VerifyOtp',
-        //   // params: { ref: response.data,phone:num ,stat:route.params?.stat},
-        //   merge: true,
-        // });
-       
-     axios({
+      if(num.length < 10){
+        alert("Please enter a valid phone number")
+      }else{
+        countdown();
+          axios({
             method: 'post',
             url: URL+'RequestOTP',
             params: {
@@ -40,19 +42,42 @@ const [otp,setOtp] = useState(['','','','','',''])
             },
             headers: {"Content-Type": "application/json; "}
           }) .then(function (response) {
-            
-            navigation.navigate({
-             name: 'VerifyOtp',
-             params: { ref: response.data,phone:num ,stat:route.params?.stat},
-             merge: true,
-           });
+            console.log(response.data)
+            if(response.data == false){
+              // let formData = new FormData();
+              // formData.append('empid','-')
+              // formData.append('function_name','Request OTP')
+              // formData.append('status','fail')
+              // formData.append('detail','PIN lock')
+    
+              // axios.post(URL+'Log', formData, {
+              //   headers: {
+              //     'Content-Type': 'multipart/form-data'
+              //   }
+              // })
+              alert("หมายเลขนี้ถูกใช้งานไปแล้ว")
+            }else{
+              navigation.navigate({
+            name: 'VerifyOtp',
+            params: { ref: response.data,phone:num ,stat:route.params?.stat},
+            merge: true,
+          });
           setModalVisible(true)
-            console.log(response.data.refno);
+            console.log(response.data.refno)
+            }
+            ;
             
         })
         .catch(function (error) {
           console.log(error)
         });
+      }
+        // navigation.navigate({
+        //   name: 'VerifyOtp',
+        //   // params: { ref: response.data,phone:num ,stat:route.params?.stat},
+        //   merge: true,
+        // });
+      
 
     }
 
@@ -79,7 +104,7 @@ const [otp,setOtp] = useState(['','','','','',''])
         <StatusBar  barStyle="light-content"></StatusBar>
         <View>
             <Text style={styles.text}>กรอกหมายเลขโทรศัพท์มือถือ</Text>
-            <View style={styles.input}>
+            {/* <View style={styles.input}>
                 <PhoneInput 
                     // ref={phoneInput}
                     // defaultValue={value}
@@ -95,186 +120,21 @@ const [otp,setOtp] = useState(['','','','','',''])
                     // withShadow
                     // autoFocus
                 />
-                </View>
-            <TextInput
+                </View> */}
+            {/* <View style={styles.inputContainer}> */}
+                    <TextInput
                          style={styles.input}
                          maxLength={10}
                          
                          onChangeText={num=> setNum(num)}
                         // value={number}
-                        placeholder="placeholder"
+                        placeholder="Phone Number"
                         keyboardType="numeric"
                         />
-        </View>
-
-        
-
-
-
-      {/* <View style={styles.centeredView}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <View style={styles.header}>
-               <Text style={styles.headertext}>OTP Vertification</Text>
-            </View>
-         
-          <View style={styles.content}>
-            <TextInput maxLength={1} style={styles.otp}
-            ref={inputRef1}
-            keyboardType={'numeric'}
-            value={value}
-            underlineColorAndroid='rgba(0,0,0,0)'
-            numberOfLines={1}
-            // secureTextEntry={true}
-            onChangeText={value => {
-              
-               setValue({ value })
-               if (value)  inputRef2.current?.focus(); 
-               //assumption is TextInput ref is input_2
-            }}
-            onKeyPress={({ nativeEvent }) => {
-                nativeEvent.key === 'Backspace' ?  inputRef1.current?.focus()   :null
-              }}
-            >
-
-            </TextInput>
-            <TextInput maxLength={1} style={styles.otp}
-            ref={inputRef2}
-            keyboardType={'numeric'}
-            value={value}
-            underlineColorAndroid='rgba(0,0,0,0)'
-            numberOfLines={1}
-            // secureTextEntry={true}
-            onChangeText={value => {
-              
-               setValue({ value })
-               if (value)  inputRef3.current?.focus(); 
-               //assumption is TextInput ref is input_2
-            }}
-            onKeyPress={({ nativeEvent }) => {
-                nativeEvent.key === 'Backspace' ? inputRef1.current?.focus() :null
-              }}
-            >
-
-            </TextInput>
-            <TextInput maxLength={1} style={styles.otp}
-            ref={inputRef3}
-            keyboardType={'numeric'}
-            value={value}
-            underlineColorAndroid='rgba(0,0,0,0)'
-            numberOfLines={1}
-            // secureTextEntry={true}
-            onChangeText={value => {
-              
-               setValue({ value })
-               if (value)  inputRef4.current?.focus(); 
-               //assumption is TextInput ref is input_2
-            }}
-            onKeyPress={({ nativeEvent }) => {
-                nativeEvent.key === 'Backspace' ? inputRef2.current?.focus():null
-              }}
-            >
-
-            </TextInput>
-            <TextInput maxLength={1} style={styles.otp}
-            ref={inputRef4}
-            keyboardType={'numeric'}
-            value={value}
-            underlineColorAndroid='rgba(0,0,0,0)'
-            numberOfLines={1}
-            // secureTextEntry={true}
-            onChangeText={value => {
-              
-               setValue({ value })
-               if (value)  inputRef5.current?.focus(); 
-               //assumption is TextInput ref is input_2
-            }}
-            onKeyPress={({ nativeEvent }) => {
-                // nativeEvent.key === 'Backspace' ? inputRef3.current?.focus():null
-
-                if(nativeEvent.key === 'Backspace'){
-                    inputRef3.current?.focus()
-                    setValue('')
-                }
-              }}
-            >
-
-            </TextInput>
-            <TextInput maxLength={1} style={styles.otp}
-            ref={inputRef5}
-            keyboardType={'numeric'}
-            value={value}
-            underlineColorAndroid='rgba(0,0,0,0)'
-            numberOfLines={1}
-            // secureTextEntry={true}
-            onChangeText={value => {
-              
-               setValue({ value })
-               if (value)  inputRef6.current?.focus(); 
-               //assumption is TextInput ref is input_2
-            }}
-            onKeyPress={({ nativeEvent }) => {
-                if(nativeEvent.key === 'Backspace'){
-                    inputRef3.current?.focus()
-                    setValue('')
-                }
-              }}
-            >
-
-            </TextInput>
-            <TextInput maxLength={1} style={styles.otp}
-            ref={inputRef6}
-            keyboardType={'numeric'}
-            value={value}
-            underlineColorAndroid='rgba(0,0,0,0)'
-            numberOfLines={1}
-            // secureTextEntry={true}
-            onChangeText={value => {
-              
-               setValue({ value })
-            //    if (value)  inputRef6.current?.focus(false); 
+                     {/* <Feather name="phone" size={24} color="black"  style={styles.icon}/> */}
+            {/* </View> */}
           
-            }}
-            onKeyPress={({ nativeEvent }) => {
-                nativeEvent.key === 'Backspace' ? inputRef5.current?.focus():null
-              }}
-            >
-
-            </TextInput>
         </View>
-            <Pressable
-              style={[styles.buttonModal, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text style={styles.textStyle}>Verify</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={() => setModalVisible(true)}
-      >
-        <Text style={styles.textStyle}>Verify</Text>
-      </Pressable>
-    </View> */}
-            
-        {/* <TouchableOpacity style={styles.button}  onPress={requestOTP}>
-            
-            <Text style={styles.buttonText}>Next{num}</Text>
-
-        </TouchableOpacity> */}
-
-
 
 
 
@@ -315,28 +175,34 @@ const styles = StyleSheet.create({
         alignItems:'center',
         margin:50
     }, 
-    iconContainer:{
+    inputContainer:{
         flexDirection:'row',
-        flexWrap:'wrap',
+        // flexWrap:'wrap',
         // marginTop:5,
-        alignItems:'center',
-        justifyContent:'center',
+        // alignItems:'center',
+        // justifyContent:'center',
         borderRadius: 20,
         // backgroundColor:'blue'
     },
     icon:{
-        fontSize:100,
-        color:'white',
+        fontSize:24,
+        color:'black',
         // letterSpacing:0,
         textAlign:'center',
         justifyContent:'center',
+        position:'absolute',
     },
     input: {
+      
         padding: 10,
         marginRight: 25,
         marginLeft: 25,
-        // borderWidth: 1,
-        marginTop:10
+        marginBottom:20,
+        borderWidth: 0.5,
+        marginTop:10,
+        borderRadius: 5,
+        paddingLeft: 15,
+        paddingRight: 15,
       },
       text:{
           textAlign:'left',

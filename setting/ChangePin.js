@@ -24,19 +24,57 @@ const [confirm_pin , setConfirm_pin] = useState('');
 
 
 const ResetPin =async()=>{
-    const id = await AsyncStorage.getItem('@empid');   
+    const empid = await AsyncStorage.getItem('@choose');   
     if(new_pin == confirm_pin){
-        alert(1)
+    
         let formData = new FormData();
-        formData.append('empid',id)
+        formData.append('id',empid)
         formData.append('old_pin',md5(old_pin))
         formData.append('new_pin',md5(confirm_pin))
         axios.post(URL+'ResetPin', formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             }
+          }).then(res=>{
+console.log(res)
+            if(res.data.bool_Result == true){
+                let formData1 = new FormData();
+                formData1.append('empid',empid)
+                formData1.append('function_name','Reset PIN')
+                formData1.append('status','success')
+                formData1.append('detail','New PIN '+ md5(confirm_pin))
+                AsyncStorage.setItem('@choosepin',md5(confirm_pin))
+                axios.post(URL+'Log', formData1, {
+                  headers: {
+                    'Content-Type': 'multipart/form-data'
+                  }
+                })
+                
+                alert('success')
+                AsyncStorage.removeItem('@lock')
+            navigation.navigate('LockScreen')
+            }else{
+                alert('fail')
+                let formData1 = new FormData();
+                formData1.append('empid',empid)
+                formData1.append('function_name','Reset PIN')
+                formData1.append('status','fail')
+                formData1.append('detail','fail')
+              
+                axios.post(URL+'Log', formData1, {
+                  headers: {
+                    'Content-Type': 'multipart/form-data'
+                  }
+                })
+            }
+       
           });
+
+      
+        
     
+    }else{
+        alert(2)
     }
   
 }
@@ -45,15 +83,15 @@ const ResetPin =async()=>{
         <View style={styles.container}>
             <View style={{marginTop:10}}>
                 {/* <Text>Current PIN</Text> */}
-                <TextInput style={styles.textInput} onChangeText={old_pin=> setOld_pin(old_pin)} keyboardType={'phone-pad'} secureTextEntry={true} placeholder={"Current PIN"}></TextInput>
+                <TextInput style={styles.textInput} onChangeText={old_pin=> setOld_pin(old_pin)}maxLength={6} keyboardType={'phone-pad'} secureTextEntry={true} placeholder={"Current PIN"}></TextInput>
             </View>
             <View style={{marginTop:15}}>
                 {/* <Text>New PIN</Text> */}
-                <TextInput style={styles.textInput}onChangeText={new_pin=> setNew_pin(new_pin)}  keyboardType={'phone-pad'} secureTextEntry={true} placeholder={"New PIN"}></TextInput>
+                <TextInput style={styles.textInput}onChangeText={new_pin=> setNew_pin(new_pin)}maxLength={6}  keyboardType={'phone-pad'} secureTextEntry={true} placeholder={"New PIN"}></TextInput>
             </View>
             <View>
                 {/* <Text>Confirm PIN</Text> */}
-                <TextInput style={styles.textInput}onChangeText={confirm_pin=> setConfirm_pin(confirm_pin)}  keyboardType={'phone-pad'} secureTextEntry={true} placeholder={"Confirm PIN"}></TextInput>
+                <TextInput style={styles.textInput}onChangeText={confirm_pin=> setConfirm_pin(confirm_pin)}maxLength={6}  keyboardType={'phone-pad'} secureTextEntry={true} placeholder={"Confirm PIN"}></TextInput>
             </View>
             <TouchableOpacity style={styles.button} onPress={ResetPin}>
                 <Text  style={styles.textButton}>Reset</Text>

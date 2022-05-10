@@ -15,7 +15,7 @@ export default function Face({ navigation,route }) {
   const {isFocused} = useIsFocused();
 const value = useContext(PictureContext)
   const [hasPermission, setHasPermission] = useState(null);
-  const [type, setType] = useState(Camera.Constants.Type.front);
+  const [type, setType] = useState(Camera.Constants.Type.back);
   const ref = useRef(null);
   // const [name,setName] = useState(context);
   // const {value,setValue} = useContext(PictureContext);
@@ -49,7 +49,7 @@ const reload = async()=>{
 }
   const takePicture = async()=>{
 
-      const option ={quatity:0.5,base64:true,skipProcessing:true};
+      const option ={quatity:1,base64:true,skipProcessing:true};
       const picture = await ref.current.takePictureAsync(option); 
       const array_picture = [picture]
     console.log(picture)
@@ -62,7 +62,7 @@ const reload = async()=>{
 
     // }
     navigation.navigate({
-      name: 'CreatePin',
+      name: 'CheckFace',
       params: { pic: picture,phone:route.params?.phone,empid:route.params?.empid,idcard:route.params?.idcard,stat:route.params?.stat  },
       merge: true,
     });
@@ -136,9 +136,9 @@ const reload = async()=>{
                 style={styles.change}
                 onPress={() => {
                   setType(
-                    type === Camera.Constants.Type.front
-                      ? Camera.Constants.Type.back
-                      : Camera.Constants.Type.front
+                    type === Camera.Constants.Type.back
+                      ? Camera.Constants.Type.front
+                      : Camera.Constants.Type.back
                   );
                 }}>
                 <AntDesign name="sync" size={20} color="black" />

@@ -10,7 +10,7 @@ import {URL} from '../provider'
 import PhoneInput from "react-native-phone-number-input";
 const {width,height} = Dimensions.get('window');
 
-export default function VerifyOtp({ navigation , route}) {
+export default function VerifyChangeNumberOTP({ navigation , route}) {
 
 const inputRef1 = useRef(null);
 const inputRef2 = useRef(null);
@@ -18,7 +18,7 @@ const inputRef3 = useRef(null);
 const inputRef4 = useRef(null);
 const inputRef5 = useRef(null);
 const inputRef6 = useRef(null);
-// const [value0, setValue] = useState("");
+const [value0, setValue] = useState("");
 const [value1, setValue1] = useState("");  
 const [value2, setValue2] = useState("");
 const [value3, setValue3] = useState("");
@@ -61,33 +61,88 @@ const _onPressNumber  = async(num) =>{
     const requestOTP = ()=>{
         var datenow = new Date()
         var date = new Date(route.params?.ref.exp)
-        console.log(datenow.toLocaleTimeString())
+        
         console.log(date.toLocaleTimeString())
-        
+        console.log(datenow.toLocaleTimeString())
  
+        setValue(value1.value + value2.value + value3.value + value4.value + value5.value + value6.value)
+        console.log(value0)
+    //     axios.post(URL+'VerifyOTP?otp='+otp+"&refno="+route.params?.ref.refno,{
+    //         headers: { "Content-Type": "application/json; "
+    //               },})
+
+    //    .then(function (response) {
+    //     //    navigation.navigate("")
         
+    //     navigation.navigate({
+    //         name: 'SignUp',
+    //         params: { phone: route.params?.phone },
+    //         merge: true,
+    //       });
+    //        console.log(response.data);
+    //    })
+    //    .catch(function (error) {
+
+    //    });
 
       if(date > datenow){
 
-        // setValue(value1.value + value2.value + value3.value + value4.value + value5.value + value6.value)
-        // console.log(value0)
+      
         axios({
         method: 'post',
         
         url: URL+'VerifyOTP',
         params: {
-            otp:value1.value + value2.value + value3.value + value4.value + value5.value + value6.value,
+            otp:value0,
             refno:route.params?.ref.refno
         },
         headers: {"Content-Type": "application/json; "}
       }) .then(function (response) {
       console.log(response.data)
         if(response.data.bool_Result == true){
-            navigation.navigate({
-                name: 'Emp',
-                params: { phone: route.params?.phone ,stat:route.params?.stat},
-                merge: true,
-              });
+          console.log('test')
+            // if(new_number == confirm_number){
+                // AsyncStorage.getItem('@phone').then(res=>{
+                    axios.get(URL+"GetGuest",{
+                      params:{
+                          phone:route.params?.phone
+                        
+                      }
+                    }).then(function(response){
+              
+                    // setdata(response.data)
+                  for(let item of response.data){
+                      console.log(item.empid)
+             
+                  
+                  
+                let formData = new FormData();
+                formData.append('id',item.empid)
+                formData.append('phone',route.params?.phone)
+                formData.append('newphone',route.params?.new)
+                axios.post(URL+'UpdateNumber', formData, {
+                    headers: {
+                      'Content-Type': 'multipart/form-data'
+                    }
+                  }).then(res=>{
+                    console.log(res.data)
+                    // AsyncStorage.setItem('@phone',route.params?.new)
+                    navigation.navigate({
+                        name: 'SignIn',
+                        // params: { phone: route.params?.phone ,stat:route.params?.stat},
+                        merge: true,
+                      });
+                  });
+                  }
+                    
+                    });
+                // })
+                // navigation.navigate('VerifyChangeNumberOTP')
+            
+            // }else{
+            //     alert(2)
+            // }
+         
         }else{
             alert('wrong')
         }
@@ -116,7 +171,7 @@ const _onPressNumber  = async(num) =>{
         <View style={styles.body}>
             <Text style={styles.text}>OTP Verification</Text>
             <Text style={styles.textNumber}>Enter the OTP send to</Text>
-            <Text >{route.params?.phone}</Text>
+            <Text >{route.params?.new}</Text>
             {/* <TextInput
                          style={styles.input}
                          maxLength={6}

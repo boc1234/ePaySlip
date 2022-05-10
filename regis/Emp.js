@@ -24,11 +24,29 @@ const [passport , setPassport] = useState('');
 
 const next= () =>{
     
-        navigation.navigate({
-            name: 'Face',
-            params: { phone:route.params?.phone,empid:empid,idcard:idcard,stat:route.params?.stat },
-            merge: true,
-          });
+
+            axios.get(URL+"GetName",{
+                params:{
+                    id:empid
+                }
+            })
+            .then(function (res) {
+                if(res.data == ''){
+                    console.log(res.data)
+                    console.log(1)
+                }else{
+                    navigation.navigate({
+                        name: 'Face',
+                        params: { phone:route.params?.phone,empid:empid,idcard:idcard,stat:route.params?.stat },
+                        merge: true,
+                      });
+                }
+                
+            })
+            
+        
+  
+     
   
         
 }

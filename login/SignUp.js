@@ -69,7 +69,7 @@ const OpenURLButton = ({ url, children }) => {
             setPin(route.params?.pin)
             setPhone(route.params?.phone)
             // }
-        })
+        },[])
     )
 
     const signUp =()=>{
@@ -107,6 +107,8 @@ const OpenURLButton = ({ url, children }) => {
             }
           }) .then(function (response) {
               
+
+            
           });
         
     }

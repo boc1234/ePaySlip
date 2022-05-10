@@ -9,10 +9,13 @@ import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Avatar } from "react-native-elements";
+import axios from 'axios';
+import {URL} from '../provider'
 export default function DrawerContent({ props,navigation }) {
 const [name,setName] = useState('')
 const [firstcha,setFirstcha] = useState('')
 const [language,setLanguage] = useState()
+
 useEffect(async()=>{
     try {
       const s_name = await AsyncStorage.getItem('@name');
@@ -28,11 +31,24 @@ useEffect(async()=>{
         AsyncStorage.getItem('@lang').then(res=>{
             setLanguage(res)
             console.log(res)
-
+            AsyncStorage.getItem('@empid').then(res=>{
+            let formData = new FormData();
+            formData.append('empid',res)
+            formData.append('function_name','Logout')
+            formData.append('status','success')
+            formData.append('detail','success')
+           
+  
+            axios.post(URL+'Log', formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            })
+            })
             AsyncStorage.getAllKeys()
                 .then(keys => AsyncStorage.multiRemove(keys))
-                .then(() =>alert('success'))
-                
+                .then(() =>alert('Successfully Sign Out'))
+     
                 .then(()=>AsyncStorage.setItem('@lang',res));
         })
         
@@ -73,7 +89,7 @@ useEffect(async()=>{
                             <View style={{marginLeft:15,}}> 
                                 <Title style={styles.title_name}>{name}</Title>
                                 {/* <Title style={styles.title_lastname}>Pattharacharoenlert</Title> */}
-                                <Caption style={styles.caption}>Owner</Caption>
+                                {/* <Caption style={styles.caption}>Owner</Caption> */}
                             </View>
                         </View>
                     </View>
@@ -91,7 +107,7 @@ useEffect(async()=>{
                         <AntDesign name="user" size={size} color={color} />
                             )}
                          label="Guest"
-                         onPress={() =>navigation.navigate('User')}
+                         onPress={() =>  navigation.navigate('MultipleUsers')}
                         />
                     </Drawer.Section>
                     

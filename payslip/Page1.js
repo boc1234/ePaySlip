@@ -2,9 +2,11 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useState ,useEffect} from 'react';
 import { StyleSheet, Text, View, Button,SafeAreaView ,SafeAreaProvider,ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CurrencyInput from 'react-native-currency-input';
 import axios from 'axios';
 // import { NumperiodContext } from '../provider';
 import t from '../language/lang';
+import Moment from 'moment';
 export default function Page1({navigation,route,props}) {
   // const [num,setNum] = useState(NumperiodContext)
     const [empid,setEmpid] = useState();
@@ -20,7 +22,7 @@ export default function Page1({navigation,route,props}) {
     const [overtime,setOvertime] = useState();
     const [other,setOther] = useState();
     const [total_income,setTotal_income] = useState();
-
+    const [account_number,setAccount_number] = useState();
     const [tax,setTax] = useState();
     const [social_welfare,setSocial_welfare] = useState();
     const [ total_deduction,setTotal_deduction] = useState();
@@ -42,8 +44,13 @@ export default function Page1({navigation,route,props}) {
           payslip.forEach(element => {
             setEmpid(element.codempid)
             setName(element._6)
-            setDate((element._7).slice(0,10))
-
+            if(element._7 == null){
+              setDate('-')
+            }else{
+              setDate((element._7).slice(0,10))
+            }
+            // setDate((element._7).slice(0,10))
+            setAccount_number(element._23)
             setSalary(element._8)
             setOvertime(element._9)
             setOther(element._12)
@@ -95,38 +102,191 @@ export default function Page1({navigation,route,props}) {
         <StatusBar barStyle="light-content"></StatusBar>
         <ScrollView>
         <View style={styles.content}> 
-            <Text style={styles.text}>
-              {t('id')[language]}  :  {empid}
-            </Text>
-    
-      
-            <Text style={styles.text}>
-              {t('name')[language]}  :  {name}
-            </Text>
 
-        
+          <View style={styles.textContent}>
             <Text style={styles.text}>
-              {t('date')[language]}  :  {date}
+              {t('id')[language]}  : 
             </Text>
+            <Text style={styles.text}>
+               {empid} 
+            </Text>
+          </View>
+            
+          <View style={styles.textContent}>
+             <Text style={styles.text}>
+              {t('name')[language]}  :  
+             </Text>
+             <Text style={styles.text}>
+             {name}
+             </Text>
+          </View>
+
+          <View style={styles.textContent}>
+            <Text style={styles.text}>
+              {t('date')[language]}  :  
+            </Text>
+            <Text style={styles.text}>
+              {Moment(date).format('DD-MMM-YYYY')}
+            </Text>
+          </View>
+
+          <View style={styles.textContent}>
+            <Text style={styles.text}>
+              {t('account_number')[language]}  :  
+            </Text>
+            <Text style={styles.text}>
+              {account_number}
+            </Text>
+          </View>
+
+
+          
         </View>
          
         <View style={styles.content}>
             <Text style={styles.header}>{t('income')[language]}</Text>
-            <Text style={styles.text}>{t('salary')[language]}  :  {salary}</Text>
-            <Text style={styles.text}>{t('overtime')[language]}  :  {overtime}</Text>
-            <Text style={styles.text}>{t('other')[language]}  :  {other}</Text>
-            <Text style={styles.text2}>{t('total_income')[language]}  :  {total_income}</Text>
+
+            <View style={styles.row}>
+            <Text style={styles.text}>{t('salary')[language]} :</Text>
+            <CurrencyInput
+              value={salary}
+              // onChangeValue={setValue}
+              // prefix="$"
+              style={{color:'black',fontSize:18}}
+              delimiter=","
+              separator="."
+              precision={2}
+              editable = {false}
+              onChangeText={(formattedValue) => {
+                
+              }}
+            />
+            </View>
+            <View style={styles.row}>
+            <Text style={styles.text}>{t('overtime')[language]} :</Text>
+            <CurrencyInput
+              value={overtime}
+              // onChangeValue={setValue}
+              // prefix="$"
+              style={{color:'black',fontSize:18}}
+              delimiter=","
+              separator="."
+              precision={2}
+              editable = {false}
+              onChangeText={(formattedValue) => {
+                
+              }}
+            />
+            </View>
+            <View style={styles.row}>
+               <Text style={styles.text}>{t('other')[language]} :</Text>
+            <CurrencyInput
+              value={other}
+              // onChangeValue={setValue}
+              // prefix="$"
+              style={{color:'black',fontSize:18}}
+              delimiter=","
+              separator="."
+              precision={2}
+              editable = {false}
+              onChangeText={(formattedValue) => {
+                
+              }}
+            />
+            </View>
+           <View style={styles.row}>
+             <Text style={styles.text2}>{t('total_income')[language]} :</Text>
+            <CurrencyInput
+              value={total_income}
+              // onChangeValue={setValue}
+              // prefix="$"
+              style={{color:'black',fontSize:18}}
+              delimiter=","
+              separator="."
+              precision={2}
+              editable = {false}
+              onChangeText={(formattedValue) => {
+                
+              }}
+            />
+           </View>
+            
         </View>
             
         <View style={styles.content}>
             <Text style={styles.header}>{t('deduction')[language]}</Text>
-            <Text style={styles.text}>{t('tax')[language]}  :  {tax}</Text>
-            <Text style={styles.text}>{t('social_welfare')[language]}  :  {social_welfare}</Text>
-            <Text style={styles.text2}>{t('total_deduction')[language]}  :  {total_deduction}</Text>
+            <View style={styles.row}>
+            <Text style={styles.text}>{t('tax')[language]} :</Text>
+            <CurrencyInput
+              value={tax}
+              // onChangeValue={setValue}
+              // prefix="$"
+              style={{color:'black',fontSize:18}}
+              delimiter=","
+              separator="."
+              precision={2}
+              editable = {false}
+              onChangeText={(formattedValue) => {
+                
+              }}
+            />
+
+            </View>
+            
+            <View style={styles.row}>
+            <Text style={styles.text}>{t('social_welfare')[language]} :</Text>
+            <CurrencyInput
+              value={social_welfare}
+              // onChangeValue={setValue}
+              // prefix="$"
+              style={{color:'black',fontSize:18}}
+              delimiter=","
+              separator="."
+              precision={2}
+              editable = {false}
+              onChangeText={(formattedValue) => {
+                
+              }}
+            />
+            </View>
+
+            <View style={styles.row}>
+            <Text style={styles.text2}>{t('total_deduction')[language]} :</Text>
+            <CurrencyInput
+              value={total_deduction}
+              // onChangeValue={setValue}
+              // prefix="$"
+              style={{color:'black',fontSize:18}}
+              delimiter=","
+              separator="."
+              precision={2}
+              editable = {false}
+              onChangeText={(formattedValue) => {
+                
+              }}
+            />
+            </View>
         </View>
 
         <View style={styles.content}>
-            <Text style={styles.total}>{t('net_income')[language]}  :  {net_income}</Text>
+          <View style={styles.row}>
+          <Text style={styles.total}>{t('net_income')[language]} : </Text>
+            <CurrencyInput
+              value={net_income}
+              // onChangeValue={setValue}
+              // prefix="$"
+              style={{color:'black',fontSize:22}}
+              delimiter=","
+              separator="."
+              precision={2}
+              editable = {false}
+              onChangeText={(formattedValue) => {
+                
+              }}
+            />
+          </View>
+            
+            
         </View>
         </ScrollView>
       </View>
@@ -143,7 +303,10 @@ const styles = StyleSheet.create({
     content:{
       margin:10,
       backgroundColor:'rgba(255,255,255,0.4)',
-      padding:20
+      padding:20,
+      paddingStart:20,
+      paddingEnd:40
+      
     },
     header:{
       fontSize:20,
@@ -153,6 +316,7 @@ const styles = StyleSheet.create({
     },
     text:{
       // margin:10,
+      
       fontSize:18,
     },
     text2:{
@@ -161,6 +325,14 @@ const styles = StyleSheet.create({
       // fontWeight:'1900'
     },
     total:{
-      fontSize:26,
+      fontSize:25,
+    },
+    textContent:{
+      justifyContent: 'space-between',
+      flexDirection: 'row',
+    },
+    row:{
+      justifyContent: 'space-between',
+      flexDirection: 'row',
     }
 });

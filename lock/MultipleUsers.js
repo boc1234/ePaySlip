@@ -1,43 +1,27 @@
-import React,{useEffect,useState} from 'react';
-import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar ,TouchableOpacity} from 'react-native';
+import React,{useEffect,useState,useCallback} from 'react';
+import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar ,TouchableOpacity,Dimensions} from 'react-native';
 import { Entypo } from '@expo/vector-icons'; 
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // const [data , setData] = useState('');
+import { useFocusEffect } from '@react-navigation/native';
 import { SpeedDial } from 'react-native-elements';
 import {URL} from '../provider'
-
-// const Item = ({ title }) => (
-//   <View style={styles.item}>
-//     <Text style={styles.title}>{title}</Text>
-//   </View>
-// );
-
-// const AddUser = () => {
-//   const renderItem = ({ item }) => (
-//     <Item title={item.title} />
-//   );
-
-//   return (
-//     <SafeAreaView style={styles.container}>
-//       <FlatList
-//         data={DATA}
-//         renderItem={renderItem}
-//         keyExtractor={item => item.id}
-//       />
-//       <TouchableOpacity style={styles.fab}>
-//       <Entypo name="plus" size={24} color="black" style={{      letterSpacing:0,
-//         textAlign:'center',justifyContent:'center',alignItems:'center'}} />
-//       </TouchableOpacity>
-//     </SafeAreaView>
-//   );
-// }
-
+import { LinearGradient } from 'expo-linear-gradient';
+import { SimpleLineIcons } from '@expo/vector-icons'; 
+const {width,height} = Dimensions.get('window');
 export default function AddUser({ navigation,route }) {
   const [data, setdata] = useState("");
   const [open, setOpen] = React.useState(false);
   useEffect(() => {
     // const phone = await 
+   
+   
+
+},[]);
+
+useFocusEffect(
+  useCallback(()=>{
     AsyncStorage.getItem('@phone').then(res=>{
       axios.get(URL+"GetGuest",{
         params:{
@@ -45,34 +29,48 @@ export default function AddUser({ navigation,route }) {
           
         }
       }).then(function(response){
-      console.log(response.data);
+
       setdata(response.data);
       });
     
     })
    
-   
-
-},[]);
-
+  },[])    
+)
 
 const add = ()=>{
   navigation.navigate({
     name: 'NotiOTP',
-    params: { stat: 0 },
+    params: { stat: 1 },
     merge: true,
   });
 }
 
 const click = (id)=>{
-  console.log(id.empid)
+
   axios.get(URL+"GetName",{
     params:{
         id:id.empid
       
     }
 }).then(function(response){
-  AsyncStorage.setItem('@guest',id.empid)
+  AsyncStorage.removeItem('@lock')
+  AsyncStorage.setItem('@choose',id.empid)
+  AsyncStorage.getItem('@phone').then(res=>{
+
+  axios.get(URL+"Login",{
+    params:{
+        id:id.empid,
+        phone:res
+    }
+
+})
+
+.then(function (response) {
+
+  AsyncStorage.setItem('@choosepin',response.data[0].pin)
+})
+  })
   navigation.navigate({
     name: 'LockScreen',
     params: { id:id.empid ,pin:id.pin ,name:response.data.namempt},
@@ -96,13 +94,16 @@ const click = (id)=>{
         onPress={()=>click(item)}
         title={item.empid} />
 
-      
-     
     );
   
     return (
       <SafeAreaView style={styles.container}>
-
+        <StatusBar></StatusBar>
+<LinearGradient colors={['#095379','#00adb5']} style={{position:'absolute',top:0,width:width,height:height}}>
+          <View style={styles.header}>
+          {/* <SimpleLineIcons name="logout" size={18} color="white" />
+          <Text>  Logout</Text> */}
+          </View>
           <FlatList
           data={data}
           renderItem={renderItem}
@@ -120,18 +121,22 @@ const click = (id)=>{
       openIcon={{ name: 'close', color: '#fff' }}
       onOpen={() => setOpen(!open)}
       onClose={() => setOpen(!open)}
+      buttonStyle={{backgroundColor:"#003380"}}
     >
-      <SpeedDial.Action
-        icon={{ name: 'add', color: '#fff' }}
-        // title="Add"
-        onPress={add}
-      />
-      <SpeedDial.Action
-        icon={{ name: 'delete', color: '#fff' }}
-        // title="Delete"
-        onPress={() => console.log('Delete Something')}
-      />
+        <SpeedDial.Action
+          icon={{ name: 'add', color: '#fff' }}
+          // title="Add"
+          onPress={add}
+          buttonStyle={{backgroundColor:"#003380"}}
+        />
+        <SpeedDial.Action
+          icon={{ name: 'delete', color: '#fff' }}
+          // title="Delete"
+          onPress={() => console.log('Delete Something')}
+          buttonStyle={{backgroundColor:"#003380"}}
+        />
     </SpeedDial>
+    </LinearGradient>
       </SafeAreaView>
     );
   }
@@ -142,6 +147,12 @@ const styles = StyleSheet.create({
     flex: 1,
     // marginTop: 10
     // marginTop: StatusBar.currentHeight || 0,
+  },
+  header:{
+    // marginTop:60
+    marginTop:30,
+    flexDirection:'row',
+    // justifyContent:'space-between',
   },
   item: {
     backgroundColor: 'rgba(255,255,255,0.4)',
@@ -156,7 +167,7 @@ const styles = StyleSheet.create({
     width: 80,  
     height: 80,   
     borderRadius: 40,            
-    backgroundColor: '#ee6e73',                                    
+    backgroundColor: '#6FB2D2',                                    
     position: 'absolute',                                          
     bottom: 20,                                                    
     right: 20, 

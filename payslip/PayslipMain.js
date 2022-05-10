@@ -22,7 +22,7 @@ export default function  PayslipMain({navigation}) {
     const [enterperiod , setEnterperiod] = useState()
     const getData = async () => {
         try {
-          const value = await AsyncStorage.getItem('@empid').then(function(){
+          const value = await AsyncStorage.getItem('@choose').then(function(){
           setEmpid(JSON.parse(value))
           console.log(empid)
           })
@@ -34,7 +34,7 @@ export default function  PayslipMain({navigation}) {
         }
       }
     const getMonthPay = async(year)=>{
-      const value = await AsyncStorage.getItem('@empid')
+      const value = await AsyncStorage.getItem('@choose')
       try {
         axios.get(URL+"GetMonthPay",{
             params:{
@@ -56,7 +56,7 @@ export default function  PayslipMain({navigation}) {
     }
     }
     const getPeriodPay = async(year,month)=>{
-      const value = await AsyncStorage.getItem('@empid')
+      const value = await AsyncStorage.getItem('@choose')
       try {
         axios.get(URL+"GetperiodPay",{
             params:{
@@ -86,11 +86,67 @@ export default function  PayslipMain({navigation}) {
     // });
 
     useEffect(()=>{
-      AsyncStorage.getItem('@guest').then(res=>{
-        console.log(res)
-        if(res == 'undefined' || res == null){
+      // AsyncStorage.getItem('@guest').then(res=>{
+     
+        // if(res == 'undefined' || res == 'null' ){
 
-           AsyncStorage.getItem('@guest').then(res=>{
+          //  AsyncStorage.getItem('@guest').then(res=>{
+          //   axios.get(URL+"GetYearPay",{
+          //     params:{
+          //         id:res
+          //     }
+          
+          // })
+          
+          // .then(function (response_year) {
+          //     // console.log(response.data)
+            
+          //    setYear(response_year.data)
+          //    setEnteryear(response_year.data[0].year)
+          //     try {
+          //       axios.get(URL+"GetMonthPay",{
+          //           params:{
+          //               id:res,
+          //               year:response_year.data[0].year
+        
+          //           }
+                
+          //       })
+          //       .then(function (response_month) {
+          //           // console.log(response_month.data)
+          //           setMonth(response_month.data)
+          //           setEntermonth(response_month.data[0].month)
+          //           try {
+
+          //             axios.get(URL+"GetperiodPay",{
+          //                 params:{
+          //                     id:res,
+          //                     year:response_year.data[0].year,
+          //                     month:response_month.data[0].month
+          //                 }
+          //             })
+          //             .then(function (response_period) {
+          //                 setPeriod(response_period.data)
+          //                 setEnterperiod(response_period.data[0].period)
+          //             })
+                      
+          //           } catch(e) {
+          //               console.log(e)
+          //             // error reading value
+          //           }
+          //       })
+                
+          //   } catch(e) {
+          //       console.log(e)
+          //     // error reading value
+          //   }
+              
+          // })
+          // })
+
+        // }else{
+            
+          AsyncStorage.getItem('@choose').then(res=>{
             axios.get(URL+"GetYearPay",{
               params:{
                   id:res
@@ -142,68 +198,12 @@ export default function  PayslipMain({navigation}) {
             }
               
           })
-          })
-
-        }else{
-            
-          AsyncStorage.getItem('@empid').then(res=>{
-            axios.get(URL+"GetYearPay",{
-              params:{
-                  id:res
-              }
           
           })
-          
-          .then(function (response_year) {
-              // console.log(response.data)
-            
-             setYear(response_year.data)
-             setEnteryear(response_year.data[0].year)
-              try {
-                axios.get(URL+"GetMonthPay",{
-                    params:{
-                        id:res,
-                        year:response_year.data[0].year
-        
-                    }
-                
-                })
-                .then(function (response_month) {
-                    // console.log(response_month.data)
-                    setMonth(response_month.data)
-                    setEntermonth(response_month.data[0].month)
-                    try {
-
-                      axios.get(URL+"GetperiodPay",{
-                          params:{
-                              id:res,
-                              year:response_year.data[0].year,
-                              month:response_month.data[0].month
-                          }
-                      })
-                      .then(function (response_period) {
-                          setPeriod(response_period.data)
-                          setEnterperiod(response_period.data[0].period)
-                      })
-                      
-                    } catch(e) {
-                        console.log(e)
-                      // error reading value
-                    }
-                })
-                
-            } catch(e) {
-                console.log(e)
-              // error reading value
-            }
-              
-          })
-          
-          })
-        }
+        // }
 
 
-      })
+      // })
       // const value = await AsyncStorage.getItem('@empid')
       // setEmpid(JSON.parse(value))
       //   console.log(value)
@@ -215,25 +215,16 @@ export default function  PayslipMain({navigation}) {
 
         
         try {
-        
-
-
-         
-
-
-
-
-
-          setYear([
-            {
-              "year": "2021"
+          // setYear([
+          //   {
+          //     "year": "2021"
               
-            },
-            {
-              "year": "2022"
+          //   },
+          //   {
+          //     "year": "2022"
               
-            }
-          ])
+          //   }
+          // ])
           
         } catch(e) {
             console.log(e)
@@ -249,9 +240,12 @@ export default function  PayslipMain({navigation}) {
         alert('กรอกข้อมูลให้ครบ')
       }else{
         try {
+          AsyncStorage.getItem('@choose').then(res=>{
+
+        
           axios.get(URL+"GetPaySlip",{
               params:{
-                  id:'Y16992',
+                  id:res,
                   year:enteryear,
                   month:entermonth,
                   period:enterperiod
@@ -263,12 +257,12 @@ export default function  PayslipMain({navigation}) {
         
               AsyncStorage.setItem('@payslip',JSON.stringify(response.data))
               navigation.navigate({
-                name: 'EPAYSLIP',
+                name: 'Page1',
                
                 merge: true,
               })
           })
-          
+        })
       } catch(e) {
           console.log(e)
         // error reading value
@@ -447,4 +441,9 @@ const styles = StyleSheet.create({
       // marginTop:20
       
   },
+  textButton:{
+    color:'white',
+    fontSize:20,
+    
+  }
 });

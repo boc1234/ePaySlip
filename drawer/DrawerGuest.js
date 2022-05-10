@@ -24,8 +24,8 @@ useEffect(async()=>{
      const removeItemValue= async() =>{
         await AsyncStorage.removeItem('@guest').then(res=>{
             AsyncStorage.setItem('@guest','undefined')
-            alert('success');
-            navigation.navigate('MyDrawer');
+            // alert('success');
+            navigation.navigate('MultipleUsers');
         })
         // .then(() => alert('success'));
         // navigation.navigate('MyDrawer')
@@ -58,7 +58,7 @@ useEffect(async()=>{
                             <View style={{marginLeft:15,}}> 
                                 <Title style={styles.title_name}>{name} </Title>
                                 {/* <Title style={styles.title_lastname}>Pattharacharoenlert</Title> */}
-                                <Caption style={styles.caption}>Guest</Caption>
+                                <Caption style={styles.caption}>Users</Caption>
                             </View>
                         </View>
                     </View>

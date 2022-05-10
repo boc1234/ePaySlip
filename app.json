@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "ePaySlip",
-    "slug": "ePaySlip",
+    "name": "STECON-App",
+    "slug": "STECON-App",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/image009.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/image009.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -17,11 +17,11 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "com.yourcompany.yourappname",
+      "bundleIdentifier": "com.stecon.STECONApp",
       "buildNumber": "1.0.0"
     },
     "android": {
-      "package": "com.stecon.newapp",
+      "package": "com.stecon.STECONApp",
       "versionCode": 1
     },
     "web": {

@@ -33,24 +33,41 @@ function toggleLanguage() {
 }
 
 const eng =()=>{
-    
+    console.log(route.params?.status)
     AsyncStorage.setItem('@lang','0')
-    navigation.navigate('Setting')
+    if(route.params?.status == 0){
+        navigation.navigate('SignIn')
+    }else{
+        navigation.navigate('Setting')
+    }
+    
 }
 const th =()=>{
     
     AsyncStorage.setItem('@lang','1')
-    navigation.navigate('Setting')
+    if(route.params?.status == 0){
+        navigation.navigate('SignIn')
+    }else{
+        navigation.navigate('Setting')
+    }
 }
 const mm =()=>{
     
     AsyncStorage.setItem('@lang','2')
-    navigation.navigate('Setting')
+    if(route.params?.status == 0){
+        navigation.navigate('SignIn')
+    }else{
+        navigation.navigate('Setting')
+    }
 }
 const kh =()=>{
     
     AsyncStorage.setItem('@lang','3')
-    navigation.navigate('Setting')
+    if(route.params?.status == 0){
+        navigation.navigate('SignIn')
+    }else{
+        navigation.navigate('Setting')
+    }
 }
 
 useFocusEffect(
@@ -59,7 +76,8 @@ useFocusEffect(
    
         setLanguage(res)
       })
-    })    
+    })
+    
   )
     return (
         // <context.Provider value={{language , toggleLanguage}}>
@@ -111,6 +129,22 @@ useFocusEffect(
          
 
        </TouchableOpacity> 
+       <TouchableOpacity style={styles.list}  onPress={kh}>  
+           
+           <View >
+               <Text style={styles.textlist}>
+               cambodia
+               </Text>
+           </View>
+           {language == '3' ?
+            <View style={styles.icon}>
+            <AntDesign name="check" size={20} color="black" />
+            </View> : null}
+         
+
+       </TouchableOpacity> 
+
+       
       {/* <Content /> */}
         
         </View>

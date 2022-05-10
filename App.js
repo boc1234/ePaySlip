@@ -27,16 +27,22 @@ import UserDetails from './UserDetails';
 import { PictureContext } from './provider';
 import DrawerContent from './drawer/DrawerContent';
 import DrawerGuest from './drawer/DrawerGuest';
+import DrawerMulti from './drawer/DrawerMulti';
 import Otp from './regis/Otp';
 import VerifyOtp from './regis/VerifyOtp';
+import MultipleUsers from './lock/MultipleUsers';
 import axios from 'axios';
 import t from './language/lang';
 import {URL} from './provider'
 import Language from './setting/Language';
 import ChangePin from './setting/ChangePin';
+import ChangeNumber from './setting/ChangeNumber';
 import ForgotPin from './lock/ForgotPin';
 import CreatePin from './regis/CreatePin';
 import Emp from './regis/Emp';
+import NotiOTP from './regis/NotiOTP';
+import VerifyNotiOtp from './regis/VerifyNotiOTP';
+import VerifyChangeNumberOTP from './setting/VerifyChangeNumberOTP';
 const Tab = createMaterialTopTabNavigator();
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -108,6 +114,30 @@ function GuestDrawer() {
     </Drawer.Navigator>
   );
 }
+function MultiDrawer() {
+  return (
+
+    <Drawer.Navigator drawerContent={props =><DrawerMulti {...props}/>} >
+      
+      <Drawer.Screen name='MultipleUsers' component={MultipleUsers}  />
+      {/* <Drawer.Screen name="Setting" component={Setting} /> */}
+      
+    </Drawer.Navigator>
+  );
+}
+
+function LaguagePage() {
+  return (
+
+    <Stack.Navigator  >
+      
+    
+      <Stack.Screen name="Language" component={Language}  />
+    
+      
+    </Stack.Navigator >
+  );
+}
 
 
 function MyStack() {
@@ -120,25 +150,30 @@ function MyStack() {
           <Stack.Screen name='LockScreen' component={LockScreen} options={{headerShown:false}}  />
           <Stack.Screen name='SignUp' component={SignUp} options={{headerTintColor: 'white',headerStyle:{backgroundColor:'rgb(140, 188, 193);'}}} />
           <Stack.Screen name='Face' component={Face}  options={{title: 'face',headerTintColor: 'white',headerStyle:{backgroundColor:'black'}}} />
-          <Stack.Screen name='Otp' component={Otp} />
-          <Stack.Screen name='VerifyOtp' component={VerifyOtp} />
-          <Stack.Screen name='Emp' component={Emp} />
+          <Stack.Screen name='Otp' component={Otp} options={{title:'OTP'}}/>
+          <Stack.Screen name='VerifyOtp' component={VerifyOtp} options={{title:'VerifyOTP'}}/>
+          <Stack.Screen name='Emp' component={Emp} options={{title:'Personal Information'}} />
           <Stack.Screen name='IDCard' component={IDCard} options={{title:"Profile" ,headerRight:()=>(<Button title={"Done"}/>)}} />
           <Stack.Screen name='CreatePin' component={CreatePin} options={{title:"PIN"}}  />
           <Stack.Screen name='ConfirmPass' component={ConfirmPass} options={{headerShown:false}}  />
           <Stack.Screen name='CheckFace' component={CheckFace}  options={{title: 'check',headerTintColor: 'white',headerStyle:{backgroundColor:'black'}}} />
           <Stack.Screen name='ID' component={ID} options={{ title: 'Employee ID' }}  />
-          <Stack.Screen name='ForgotPin' component={ForgotPin}   options={{title: 'Forgot Password',headerTintColor: 'white',headerStyle:{backgroundColor:'#095379'}}} />
+          <Stack.Screen name='ForgotPin' component={ForgotPin}   options={{title: 'Forgot PIN',headerTintColor: 'white',headerStyle:{backgroundColor:'#095379'}}} />
           <Stack.Screen name='EPAYSLIP' component={Toptab}   />
           <Stack.Screen name='MyDrawer' component={MyDrawer} options={{headerShown:false}}  />
           <Stack.Screen name='GuestDrawer' component={GuestDrawer} options={{headerShown:false}}  />
           <Stack.Screen name='PaySlip' component={PayslipMain} />
-          <Stack.Screen name='Page1' component={Page1} options={{headerStyle:{backgroundColor:'rgb(140, 188, 193);'}}} />
+          <Stack.Screen name='Page1' component={Page1} options={{title: 'PaySlip',headerStyle:{backgroundColor:'rgb(140, 188, 193);'}}} />
           <Stack.Screen name='Setting' component={Setting} />
           <Stack.Screen name='Language' component={Language} />
-          <Stack.Screen name='ChangePIN' component={ChangePin} />
-          
-          {/* <Stack.Screen name='LockScreen' component={LockScreen} options={{headerShown:false}}  /> */}
+          <Stack.Screen name='ChangePIN' component={ChangePin} options={{title:'Change PIN'}} />
+          <Stack.Screen name="User" component={AddUser} options={{title:"Guest"}}/>
+          <Stack.Screen name='MultipleUsers' component={MultipleUsers} options={{headerShown:false,headerStyle:{backgroundColor:'#095379'}}}  />
+          <Stack.Screen name='ChangeNumber' component={ChangeNumber} />
+          <Stack.Screen name='NotiOTP' component={NotiOTP} options={{title:"OTP"}}/>
+          <Stack.Screen name='VerifyNotiOtp' component={VerifyNotiOtp} options={{title:"VerifyOTP"}}/>
+          <Stack.Screen name='VerifyChangeNumberOTP' component={VerifyChangeNumberOTP}  options={{title:"VerifyOTP"}} />
+    
       </Stack.Navigator>
     );
   

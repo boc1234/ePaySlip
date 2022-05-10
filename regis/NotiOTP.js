@@ -23,17 +23,16 @@ Notifications.setNotificationHandler({
     }),
   });
   
-export default function ForgotPin({ navigation }) {
+export default function NotiOTP({ navigation,route }) {
      const [empid , setEmpid] = useState('')
      const [timerCount, setTimer] = useState(0)
+     const [num,setNum] = useState('')
      const [timeDisabled , setTimeDisabled] = useState(false);
      const [expoPushToken, setExpoPushToken] = useState('');
      const [notification, setNotification] = useState(false);
-     const [phone,setPhone] = useState('');
      const notificationListener = useRef();
      const responseListener = useRef();
 
-     
      useEffect(() => {
        setEmpid(AsyncStorage.getItem('@empid'))
        
@@ -89,17 +88,21 @@ export default function ForgotPin({ navigation }) {
         return token;
       }
       async function sendPushNotification(expoPushToken) {
-  
+        let date = new Date();
+        console.log(date)
         var random = Math.floor(100000 + Math.random() * 900000)
+        // var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        let str = generateString(4)
+
         AsyncStorage.removeItem('@lock')
         const message = {
           to: expoPushToken,
           sound: 'default',
           title: 'Original Title',
-          body: 'Your Password PIN:'+random,
+          body: 'OTP:'+random,
           data: { someData: 'goes here' },
         };
-    
+      console.log(JSON.stringify(message))
         await fetch('https://exp.host/--/api/v2/push/send', {
           method: 'POST',
           headers: {
@@ -109,36 +112,29 @@ export default function ForgotPin({ navigation }) {
           },
           body: JSON.stringify(message),
           
-        }).then(async res=>{
-          AsyncStorage.removeItem('@lock')
-
+        }).then(res=>{
           let formData = new FormData();
-          let a = await AsyncStorage.getItem('@screen');
-          let id = ''
-          if(a == 'lock'){
-            id = await AsyncStorage.getItem('@empid')
-            console.log(id)
-          }else{
-            id = await AsyncStorage.getItem('@choose')
-            console.log(id)
-          }
-          
+          formData.append('otp',random)
+          formData.append('phone','098765432')
+          formData.append('detail','app')
+          formData.append('refno',generateString(4))
+          axios.post(URL+'RequestOTP2', formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            }).then(res=>{
+              
+            //    AsyncStorageLib.removeItem('@lock')
+            });
 
-
-            formData.append('id',id)
-            formData.append('phone',phone)
-            formData.append('new_pin',md5(random))
-            await axios.post(URL+'ForgotPin', formData, {
-                headers: {
-                  'Content-Type': 'multipart/form-data'
-                }
-              }).then(res=>{
-          console.log(res)
-                
-              });
 
           countdown();
-            navigation.navigate('ChangePIN')
+            // navigation.navigate('ChangePIN')
+            navigation.navigate({
+                name: 'Emp',
+                params: { ref:'',phone:num ,stat:route.params?.stat,date:date},
+                merge: true,
+              });
         });
       }
       function countdown() {
@@ -152,32 +148,36 @@ export default function ForgotPin({ navigation }) {
         //cleanup the interval on complete
         return ()=> clearInterval(interval)
       }
+      const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      function generateString(length) {
+        let result = ' ';
+        const charactersLength = characters.length;
+        for ( let i = 0; i < length; i++ ) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+    
+        return result;
+    }
+    
 
     return (
         
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} >
         
         {/* <ScrollView > */}
-        <View style={styles.container}>
+        <View >
         
         {/* <LinearGradient colors={['#095379','#00adb5']}  style={styles.container} > */}
         <StatusBar  barStyle="light-content"></StatusBar>
-            {/* <View style={styles.iconContainer}>
-                <TouchableOpacity  disabled={true} style={styles.frame}>
-                     <FontAwesome name="mobile-phone"  style={styles.icon} />
-                 </TouchableOpacity>
 
-                 
-            </View> */}
            
             <View style={{marginBottom:20}} >
                     <Text style={styles.text}>กรอกหมายเลขโทรศัพท์มือถือ </Text>
                         <TextInput
                          style={styles.input}
-                    
-                         onChangeText={num=> setPhone(num)}
+                         onChangeText={num=> setNum(num)}
                         // value={number}
-                        placeholder="useless placeholder"
+                        placeholder="Phone Number"
                         keyboardType="numeric"
                         />
                         
@@ -185,7 +185,7 @@ export default function ForgotPin({ navigation }) {
            
             <TouchableOpacity style={(timerCount != 0 ? styles.button: styles.button2)}disabled={(timerCount != 0 ? true: false)} onPress={async() =>  {await sendPushNotification(expoPushToken)}}>
               {/* <View  */}
-                 <Text style={(timerCount == 0 ? styles.buttonText: {height: 0, width: 0, opacity: 0})}>Reset PIN
+                 <Text style={(timerCount == 0 ? styles.buttonText: {height: 0, width: 0, opacity: 0})}>Get OTP
                 </Text>
                 <Text style={(timerCount != 0 ? styles.buttonText: {height: 0, width: 0, opacity: 0})} >{timerCount}</Text>
               {/* </View> */}
@@ -246,8 +246,12 @@ const styles = StyleSheet.create({
         padding: 10,
         marginRight: 25,
         marginLeft: 25,
-        borderWidth: 1,
-        padding: 10,
+        marginBottom:20,
+        borderWidth: 0.5,
+        marginTop:10,
+        borderRadius: 5,
+        paddingLeft: 15,
+        paddingRight: 15,
       },
       text:{
           textAlign:'left',
